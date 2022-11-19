@@ -8,8 +8,8 @@
 - Styling libraries: Styled-components + UI component lib (MUI/Antd)
 - API integration: React-query (TanStack)
 
-
 ## User Stories
+
 - US01. Jako użytkownik chcę mieć możliwość przeglądania aukcji wystawionych przez wybraną przeze mnie szkołę.
 - US02. Jako użytkownik chcę mieć możliwość filtrowania aukcji po kategoriach prac.
 - US03. Jako użytkownik chcę odfiltrować aukcje nie przekraczające podanej kwoty.
