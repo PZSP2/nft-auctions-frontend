@@ -6,7 +6,7 @@ const BrowsePage = () => {
     <main className="px-7 py-14 flex flex-col gap-7">
       <h3 className="text-3xl font-semibold">Trending schools</h3>
       <span>Checkout our weekly updated trending schools.</span>
-      <section className="flex justify-around gap-4">
+      <section className="flex justify-around gap-4 flex-wrap">
         <div className="flex flex-col gap-2">
           <img src={browseImage} alt="trending image" className="w-96" />
           <div className="flex gap-1 w-96 justify-around">

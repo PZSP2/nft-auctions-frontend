@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { ReactComponent as RocketIcon } from "../../assets/icons/rocketIcon.svg";
 import { ReactComponent as LandingImage } from "../../assets/images/landingImage.svg";
 import userAvatar from "../../assets/images/userAvatar.png";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  const handleGetStarted = () => navigate("/register");
   return (
     <main className="px-20 py-14 flex gap-7">
       <section className="flex flex-col">
@@ -17,7 +20,10 @@ const LandingPage = () => {
           NFT Marketplace is designed for students' school works. Collect, buy
           and sell works from more than 20k NFT users
         </span>
-        <button className="btn bg-secondary hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus mt-24 w-fit">
+        <button
+          onClick={handleGetStarted}
+          className="btn bg-secondary hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus mt-24 w-fit"
+        >
           <RocketIcon className="mr-3" />
           Get started
         </button>

@@ -4,7 +4,7 @@ const RegisterPage = () => {
   return (
     <main className="flex flex-row">
       <img src={registerImage} alt="register" />
-      <section className="px-14 py-16 flex flex-col">
+      <section className="px-14 py-8 flex flex-col">
         <span className="font-semibold text-4xl">Create account</span>
         <span className="text-xl mt-4">
           Enter your details and start creating,
@@ -34,6 +34,9 @@ const RegisterPage = () => {
         <button className="btn px-16 bg-secondary  hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus mt-16 ml-10 w-fit">
           Create account
         </button>
+        <a href="/login" className="ml-12 mt-2 underline">
+          Don't have an account? Sign up
+        </a>
       </section>
     </main>
   );
