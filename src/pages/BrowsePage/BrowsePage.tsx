@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SchoolImage from "../../assets/images/schoolImage.jpg";
 
 const SCHOOLS_MOCK = [
@@ -8,11 +9,14 @@ const SCHOOLS_MOCK = [
   { id: 4, name: "Warsaw University of Technology" },
   { id: 5, name: "Warsaw University of Technology" },
   { id: 6, name: "Warsaw University of Technology" },
-  { id: 7, name: "Warsaw University of Technology" },
 ];
 
 const BrowsePage = () => {
   const [schools, setSchools] = useState(SCHOOLS_MOCK);
+  const navigate = useNavigate();
+
+  const handleSchoolClick = (schoolId: number) =>
+    navigate(`/browse/${schoolId}`);
 
   return (
     <main className="py-32 px-20 flex items-start flex-col justify-center">
@@ -22,7 +26,11 @@ const BrowsePage = () => {
       </header>
       <section className="flex gap-10 mt-24 flex-wrap justify-center">
         {schools.map(({ id, name }) => (
-          <div className="max-w-xs cursor-pointer" key={id}>
+          <div
+            className="max-w-xs cursor-pointer"
+            key={id}
+            onClick={() => handleSchoolClick(id)}
+          >
             <img src={SchoolImage} alt="school" className="rounded-t-xl" />
             <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-primaryHoverFocus">
               <span className="font-medium text-xl">{name}</span>

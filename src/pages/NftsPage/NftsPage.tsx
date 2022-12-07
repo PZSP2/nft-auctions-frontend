@@ -54,14 +54,6 @@ const NFTS_MOCK = [
     buyNow: "125 $",
     currentBid: "16.5$",
   },
-  {
-    id: 7,
-    name: "Random NFT name",
-    img: nftImageMock1,
-    author: "Piotrus Brzezinski",
-    buyNow: "125 $",
-    currentBid: "16.5$",
-  },
 ];
 
 const handleSeeMore = () => {};
