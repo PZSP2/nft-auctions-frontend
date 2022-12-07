@@ -3,7 +3,7 @@ import registerImage from "../../assets/images/loginRegisterImage.png";
 const RegisterPage = () => {
   return (
     <main className="flex flex-row justify-center items-center p-20">
-      <img src={registerImage} alt="register" />
+      <img src={registerImage} alt="register" className="rounded-xl" />
       <section className="p-14 flex flex-col">
         <span className="font-semibold text-4xl">Create account</span>
         <span className="text-xl mt-4">
@@ -35,7 +35,7 @@ const RegisterPage = () => {
           Create account
         </button>
         <a href="/login" className="ml-12 mt-2 underline">
-          Don't have an account? Sign up
+          Already have an account? Sign in
         </a>
       </section>
     </main>

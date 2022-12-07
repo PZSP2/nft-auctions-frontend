@@ -3,7 +3,7 @@ import loginImage from "../../assets/images/loginRegisterImage.png";
 const LoginPage = () => {
   return (
     <main className="flex flex-row justify-center items-center p-20">
-      <img src={loginImage} alt="login" />
+      <img src={loginImage} alt="login" className="rounded-xl" />
       <section className="p-14 flex flex-col">
         <span className="font-semibold text-4xl">Login</span>
         <span className="text-xl mt-4">
