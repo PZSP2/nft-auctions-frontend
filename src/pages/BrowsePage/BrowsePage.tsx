@@ -1,84 +1,34 @@
-import browseImage from "../../assets/images/browseImage.png";
-import subPhotoBrowse from "../../assets/images/subPhotoBrowse.png";
+import { useState } from "react";
+import SchoolImage from "../../assets/images/schoolImage.jpg";
+
+const SCHOOLS_MOCK = [
+  { id: 1, name: "Warsaw University of Technology" },
+  { id: 2, name: "Warsaw University of Technology" },
+  { id: 3, name: "Warsaw University of Technology" },
+  { id: 4, name: "Warsaw University of Technology" },
+  { id: 5, name: "Warsaw University of Technology" },
+  { id: 6, name: "Warsaw University of Technology" },
+  { id: 7, name: "Warsaw University of Technology" },
+];
 
 const BrowsePage = () => {
+  const [schools, setSchools] = useState(SCHOOLS_MOCK);
+
   return (
-    <main className="px-7 py-14 flex flex-col gap-7">
-      <h3 className="text-3xl font-semibold">Trending schools</h3>
-      <span>Checkout our weekly updated trending schools.</span>
-      <section className="flex justify-around gap-4 flex-wrap">
-        <div className="flex flex-col gap-2">
-          <img src={browseImage} alt="trending image" className="w-96" />
-          <div className="flex gap-1 w-96 justify-around">
-            <img
-              src={subPhotoBrowse}
-              alt="trending image"
-              className="flex-1 w-0"
-            />
-            <img
-              src={subPhotoBrowse}
-              alt="trending image"
-              className="flex-1 w-0"
-            />
-            <span className="flex-1 w-0 bg-secondary rounded-3xl flex items-center justify-center text-xl font-semibold">
-              1025+
-            </span>
+    <main className="py-32 px-20 flex items-start flex-col justify-center">
+      <header>
+        <h3 className="text-3xl font-bold">Discover available schools</h3>
+        <h4 className="text-xl mt-3">Explore new trending universities</h4>
+      </header>
+      <section className="flex gap-10 mt-24 flex-wrap justify-center">
+        {schools.map(({ id, name }) => (
+          <div className="max-w-xs cursor-pointer" key={id}>
+            <img src={SchoolImage} alt="school" className="rounded-t-xl" />
+            <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-primaryHoverFocus">
+              <span className="font-medium text-xl">{name}</span>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <img src={browseImage} alt="trending image" className="w-96" />
-          <div className="flex gap-1 w-96 justify-around">
-            <img
-              src={subPhotoBrowse}
-              alt="trending image"
-              className="flex-1 w-0"
-            />
-            <img
-              src={subPhotoBrowse}
-              alt="trending image"
-              className="flex-1 w-0"
-            />
-            <span className="flex-1 w-0 bg-secondary rounded-3xl flex items-center justify-center text-xl font-semibold">
-              1025+
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <img src={browseImage} alt="trending image" className="w-96" />
-          <div className="flex gap-1 w-96 justify-around">
-            <img
-              src={subPhotoBrowse}
-              alt="trending image"
-              className="flex-1 w-0"
-            />
-            <img
-              src={subPhotoBrowse}
-              alt="trending image"
-              className="flex-1 w-0"
-            />
-            <span className="flex-1 w-0 bg-secondary rounded-3xl flex items-center justify-center text-xl font-semibold">
-              1025+
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <img src={browseImage} alt="trending image" className="w-96" />
-          <div className="flex gap-1 w-96 justify-around">
-            <img
-              src={subPhotoBrowse}
-              alt="trending image"
-              className="flex-1 w-0"
-            />
-            <img
-              src={subPhotoBrowse}
-              alt="trending image"
-              className="flex-1 w-0"
-            />
-            <span className="flex-1 w-0 bg-secondary rounded-3xl flex items-center justify-center text-xl font-semibold">
-              1025+
-            </span>
-          </div>
-        </div>
+        ))}
       </section>
     </main>
   );

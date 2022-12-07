@@ -7,7 +7,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const handleGetStarted = () => navigate("/register");
   return (
-    <main className="px-20 py-14 flex gap-7">
+    <main className="p-20 flex gap-7 justify-center items-center">
       <section className="flex flex-col">
         <span className="font-semibold text-5xl mb-4 leading-tight">
           Discover
@@ -42,8 +42,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      <section>
-        <LandingImage className="" />
+      <section className="hidden md:block">
+        <LandingImage />
         <div className="bg-primary p-5 rounded-b-xl">
           <span className="font-medium text-2xl">Space Walking</span>
           <span className="flex mt-3 gap-3 leading-xs items-center">

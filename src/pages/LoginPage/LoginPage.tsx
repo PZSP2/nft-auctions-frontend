@@ -2,9 +2,9 @@ import loginImage from "../../assets/images/loginRegisterImage.png";
 
 const LoginPage = () => {
   return (
-    <main className="flex flex-row">
-      <img src={loginImage} alt="register" />
-      <section className="px-14 py-16 flex flex-col">
+    <main className="flex flex-row justify-center items-center p-20">
+      <img src={loginImage} alt="login" />
+      <section className="p-14 flex flex-col">
         <span className="font-semibold text-4xl">Login</span>
         <span className="text-xl mt-4">
           Enter your account details

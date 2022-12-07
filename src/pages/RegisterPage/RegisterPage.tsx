@@ -2,9 +2,9 @@ import registerImage from "../../assets/images/loginRegisterImage.png";
 
 const RegisterPage = () => {
   return (
-    <main className="flex flex-row">
+    <main className="flex flex-row justify-center items-center p-20">
       <img src={registerImage} alt="register" />
-      <section className="px-14 py-8 flex flex-col">
+      <section className="p-14 flex flex-col">
         <span className="font-semibold text-4xl">Create account</span>
         <span className="text-xl mt-4">
           Enter your details and start creating,
