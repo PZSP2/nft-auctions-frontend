@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SchoolImage from "../../assets/images/schoolImage.jpg";
+import { ReactComponent as SearchIcon } from "../../assets/icons/searchIcon.svg";
 
 const SCHOOLS_MOCK = [
   { id: 1, name: "Warsaw University of Technology" },
@@ -20,9 +21,19 @@ const BrowsePage = () => {
 
   return (
     <main className="py-32 px-20 flex items-start flex-col justify-center">
-      <header>
-        <h3 className="text-3xl font-bold">Discover available schools</h3>
-        <h4 className="text-xl mt-3">Explore new trending universities</h4>
+      <header className="flex justify-around w-full">
+        <span>
+          <h3 className="text-3xl font-bold">Discover available schools</h3>
+          <h4 className="text-xl mt-3">Explore new trending universities</h4>
+        </span>
+        <span className="relative">
+          <input
+            type="text"
+            placeholder="Search school..."
+            className="input input-bordered w-full max-w-xs bg-transparent border-primary pr-12"
+          />
+          <SearchIcon className="absolute top-3 right-3 cursor-pointer" />
+        </span>
       </header>
       <section className="flex gap-10 mt-24 flex-wrap justify-center">
         {schools.map(({ id, name }) => (
