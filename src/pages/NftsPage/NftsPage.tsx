@@ -68,7 +68,7 @@ const NftsPage = () => {
     <>
       <Header />
       <main className="py-32 px-20 flex items-start flex-col justify-center">
-        <header className="flex justify-around w-full">
+        <div className="flex justify-around w-full">
           <span>
             <h3 className="text-3xl font-bold">Discover more NFTs</h3>
             <h4 className="text-xl mt-3">Explore new trending tokens</h4>
@@ -80,7 +80,7 @@ const NftsPage = () => {
             <EyeIcon className="mr-3" />
             See more
           </button>
-        </header>
+        </div>
         <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
           {nfts.map(({ id, name, img, author, buyNow, currentBid }) => (
             <div className="max-w-xs cursor-pointer" key={id}>
@@ -105,6 +105,12 @@ const NftsPage = () => {
             </div>
           ))}
         </section>
+        <div className="btn-group mt-10 self-end">
+          <button className="btn btn-active">1</button>
+          <button className="btn">2</button>
+          <button className="btn">3</button>
+          <button className="btn">4</button>
+        </div>
       </main>
     </>
   );

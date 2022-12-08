@@ -15,9 +15,15 @@ const Footer = () => {
       </div>
       <div className="flex flex-col items-center gap-3 w-80">
         <span className="font-bold font-mono text-xl">Explore</span>
-        <span className="text-gray">Marketplace</span>
-        <span className="text-gray">Schools</span>
-        <span className="text-gray">Login</span>
+        <span className="text-gray cursor-pointer hover:text-white">
+          Marketplace
+        </span>
+        <span className="text-gray cursor-pointer hover:text-white">
+          Rankings
+        </span>
+        <span className="text-gray cursor-pointer hover:text-white">
+          Contact
+        </span>
       </div>
       <div className="flex flex-col gap-3 w-80">
         <span className="font-bold font-mono text-xl">Join newsletter</span>
