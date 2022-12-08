@@ -8,7 +8,7 @@ import RegisterPage from "../pages/RegisterPage";
 
 const App = () => {
   return (
-    <div className="pb-44">
+    <div className="pb-44 relative min-h-screen">
       <Routes>
         <Route element={<LandingPage />} path="/" />
         <Route element={<LoginPage />} path="/login" />
