@@ -34,7 +34,7 @@ const Footer = () => {
           <input
             type="text"
             placeholder="Enter your email"
-            className="input w-72"
+            className="input w-72 text-black"
           />
           <button className="btn bg-secondary hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus w-fit">
             Subscribe

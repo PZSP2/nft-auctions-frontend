@@ -2,14 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as RocketIcon } from "../../assets/icons/rocketIcon.svg";
 import { ReactComponent as LandingImage } from "../../assets/images/landingImage.svg";
 import userAvatar from "../../assets/images/userAvatar.png";
-import Header from "../../components/Header";
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const handleGetStarted = () => navigate("/register");
   return (
     <>
-      <Header />
       <main className="p-20 flex gap-7 justify-center items-center">
         <section className="flex flex-col">
           <span className="font-semibold text-5xl mb-4 leading-tight">

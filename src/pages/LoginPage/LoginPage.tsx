@@ -1,10 +1,8 @@
 import loginImage from "../../assets/images/loginRegisterImage.png";
-import Header from "../../components/Header";
 
 const LoginPage = () => {
   return (
     <>
-      <Header />
       <main className="flex flex-row justify-center items-center p-20">
         <img src={loginImage} alt="login" className="rounded-xl" />
         <section className="p-14 flex flex-col">

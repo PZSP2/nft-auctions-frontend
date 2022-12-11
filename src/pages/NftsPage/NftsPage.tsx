@@ -4,7 +4,7 @@ import nftImageMock2 from "../../assets/images/nft_2.png";
 import nftImageMock3 from "../../assets/images/nft_3.png";
 import authorImg from "../../assets/images/userAvatar.png";
 import { ReactComponent as EyeIcon } from "../../assets/icons/eyeIcon.svg";
-import Header from "../../components/Header";
+import { useNavigate, useParams } from "react-router-dom";
 
 const NFTS_MOCK = [
   {
@@ -59,60 +59,60 @@ const NFTS_MOCK = [
 
 const NftsPage = () => {
   const [nfts, setNfts] = useState(NFTS_MOCK);
+  const navigate = useNavigate();
+  const { schoolId } = useParams<{ schoolId: string }>();
 
   const handleSeeMore = () => {
     setNfts([...nfts, ...NFTS_MOCK]);
   };
 
+  const handleNftClick = (nftId: string) =>
+    navigate(`/browse/${schoolId}/${nftId}`);
+
   return (
-    <>
-      <Header />
-      <main className="py-32 px-20 flex items-start flex-col justify-center">
-        <div className="flex justify-around w-full">
-          <span>
-            <h3 className="text-3xl font-bold">Discover more NFTs</h3>
-            <h4 className="text-xl mt-3">Explore new trending tokens</h4>
-          </span>
-          <button
-            onClick={handleSeeMore}
-            className="btn w-fit bg-transparent border-secondary hover:bg-transparent focus:bg-transparent hover:border-secondary focus:border-secondary"
+    <main className="py-32 px-20 flex items-start flex-col justify-center">
+      <div className="flex justify-around w-full">
+        <span>
+          <h3 className="text-3xl font-bold">Discover more NFTs</h3>
+          <h4 className="text-xl mt-3">Explore new trending tokens</h4>
+        </span>
+        <button
+          onClick={handleSeeMore}
+          className="btn w-fit bg-transparent border-secondary hover:bg-transparent focus:bg-transparent hover:border-secondary focus:border-secondary"
+        >
+          <EyeIcon className="mr-3" />
+          See more
+        </button>
+      </div>
+      <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
+        {nfts.map(({ id, name, img, author, buyNow, currentBid }) => (
+          <div
+            className="max-w-xs cursor-pointer"
+            key={id}
+            onClick={() => handleNftClick(id)}
           >
-            <EyeIcon className="mr-3" />
-            See more
-          </button>
-        </div>
-        <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
-          {nfts.map(({ id, name, img, author, buyNow, currentBid }) => (
-            <div className="max-w-xs cursor-pointer" key={id}>
-              <img src={img} alt="nft" className="rounded-t-xl" />
-              <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
-                <span className="font-medium text-lg">{name}</span>
-                <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
-                  <img src={authorImg} alt="author" />
-                  {author}
+            <img src={img} alt="nft" className="rounded-t-xl" />
+            <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
+              <span className="font-medium text-lg">{name}</span>
+              <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
+                <img src={authorImg} alt="author" />
+                {author}
+              </span>
+              <div className="flex justify-between mt-5 font-mono">
+                <span className="flex gap-1 flex-col">
+                  <span className="text-gray">Min bid</span>
+                  <span>{buyNow}</span>
                 </span>
-                <div className="flex justify-between mt-5 font-mono">
-                  <span className="flex gap-1 flex-col">
-                    <span className="text-gray">Buy now</span>
-                    <span>{buyNow}</span>
-                  </span>
-                  <span className="flex gap-1 flex-col">
-                    <span className="text-gray">Current bid</span>
-                    <span>{currentBid}</span>
-                  </span>
-                </div>
+                <span className="flex gap-1 flex-col">
+                  <span className="text-gray">Current bid</span>
+                  <span>{currentBid}</span>
+                </span>
               </div>
             </div>
-          ))}
-        </section>
-        <div className="btn-group mt-10 self-end">
-          <button className="btn btn-active">1</button>
-          <button className="btn">2</button>
-          <button className="btn">3</button>
-          <button className="btn">4</button>
-        </div>
-      </main>
-    </>
+          </div>
+        ))}
+      </section>
+    </main>
   );
 };
 
