@@ -5,6 +5,9 @@ import nftImageMock3 from "../../assets/images/nft_3.png";
 import authorImg from "../../assets/images/userAvatar.png";
 import { ReactComponent as EyeIcon } from "../../assets/icons/eyeIcon.svg";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { API_KEYS } from "../../api/API_KEYS";
+import { useQuery } from "@tanstack/react-query";
 
 const NFTS_MOCK = [
   {
@@ -57,17 +60,31 @@ const NFTS_MOCK = [
   },
 ];
 
+type Nft = {
+  id: number;
+  name: string;
+  img: string;
+  description: string;
+};
+
 const NftsPage = () => {
-  const [nfts, setNfts] = useState(NFTS_MOCK);
+  const [nfts, setNfts] = useState<Nft[]>([]);
   const navigate = useNavigate();
   const { schoolId } = useParams<{ schoolId: string }>();
+  const { data: nftsResponse } = useQuery(
+    [API_KEYS.GET_NFTS],
+    () => axios.get("/api/nft").then((response) => response),
+    { onSuccess: (response) => handleFetchSuccess(response.data) }
+  );
 
-  const handleSeeMore = () => {
-    setNfts([...nfts, ...NFTS_MOCK]);
-  };
+  const handleSeeMore = () => {};
 
-  const handleNftClick = (nftId: string) =>
+  const handleNftClick = (nftId: number) =>
     navigate(`/browse/${schoolId}/${nftId}`);
+
+  const handleFetchSuccess = (nftsData: Nft[]) => {
+    setNfts(nftsData);
+  };
 
   return (
     <main className="py-32 px-20 flex items-start flex-col justify-center">
@@ -85,27 +102,27 @@ const NftsPage = () => {
         </button>
       </div>
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
-        {nfts.map(({ id, name, img, author, buyNow, currentBid }) => (
+        {nfts.map(({ id, name, img, description }) => (
           <div
             className="max-w-xs cursor-pointer"
             key={id}
             onClick={() => handleNftClick(id)}
           >
-            <img src={img} alt="nft" className="rounded-t-xl" />
+            <img src={nftImageMock1} alt="nft" className="rounded-t-xl" />
             <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
               <span className="font-medium text-lg">{name}</span>
               <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
                 <img src={authorImg} alt="author" />
-                {author}
+                {`Biga mock`}
               </span>
               <div className="flex justify-between mt-5 font-mono">
                 <span className="flex gap-1 flex-col">
                   <span className="text-gray">Min bid</span>
-                  <span>{buyNow}</span>
+                  <span>{`125 $`}</span>
                 </span>
                 <span className="flex gap-1 flex-col">
                   <span className="text-gray">Current bid</span>
-                  <span>{currentBid}</span>
+                  <span>{`150 $`}</span>
                 </span>
               </div>
             </div>
