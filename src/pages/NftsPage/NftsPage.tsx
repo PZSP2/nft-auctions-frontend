@@ -63,7 +63,7 @@ const NFTS_MOCK = [
 type Nft = {
   id: number;
   name: string;
-  img: string;
+  image: string;
   description: string;
 };
 
@@ -102,13 +102,17 @@ const NftsPage = () => {
         </button>
       </div>
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
-        {nfts.map(({ id, name, img, description }) => (
+        {nfts.map(({ id, name, image, description }) => (
           <div
             className="max-w-xs cursor-pointer"
             key={id}
             onClick={() => handleNftClick(id)}
           >
-            <img src={nftImageMock1} alt="nft" className="rounded-t-xl" />
+            <img
+              src={`data:image/jpeg;base64,${image}`}
+              alt="nft"
+              className="rounded-t-xl"
+            />
             <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
               <span className="font-medium text-lg">{name}</span>
               <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
