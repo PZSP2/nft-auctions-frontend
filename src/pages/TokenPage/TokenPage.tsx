@@ -26,19 +26,50 @@ type Auction = {
 };
 
 const TokenPage = () => {
-  const [bid, setBid] = useState("123");
+  const [bid, setBid] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [auction, setAuction] = useState<Auction>();
   const { nftId } = useParams<{ nftId: string }>();
-
-  const { data: tokenResponse, mutateAsync } = useMutation(
+  const maxBid =
+    auction && Math.max(...auction.bids.map(({ bid_price }) => bid_price));
+  const {
+    data: tokenResponse,
+    mutateAsync,
+    isLoading: loadingNft,
+  } = useMutation(
     [API_KEYS.GET_NFT],
     () => axios.get(`/api/auction?nftId=${nftId}`).then((res) => res),
     { onSuccess: (response) => handleFetchSuccess(response.data) }
   );
 
+  const {
+    data: bidResponse,
+    mutateAsync: mutateBid,
+    isLoading: loadingBid,
+  } = useMutation(
+    [API_KEYS.BID_NFT],
+    () =>
+      axios
+        .post(`/api/auction/${nftId}/bid`, {
+          bidderId: 1,
+          bidAmount: bid,
+        })
+        .then((res) => res),
+    {
+      onSuccess: () => {
+        nftId && mutateAsync();
+      },
+      onError: () => {
+        alert("Bid too low!");
+      },
+    }
+  );
+
   useEffect(() => {
     nftId && mutateAsync();
+  }, [nftId]);
+
+  useEffect(() => {
     const auctionTimer = setInterval(() => {
       setSecondsLeft(secondsLeft - 1);
       if (secondsLeft <= 0) clearInterval(auctionTimer);
@@ -50,12 +81,13 @@ const TokenPage = () => {
   const handleFetchSuccess = (data: Auction[]) => setAuction(data[0]);
 
   const handleBidChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setBid(`${e.target.value}`);
+    setBid(Number(e.target.value));
 
-  const handlePlaceBid = () => {};
+  const handlePlaceBid = () => {
+    bid && mutateBid();
+  };
 
   if (!auction) return <h3>Loading data...</h3>;
-
   return (
     <main className="py-32 px-20 flex justify-center gap-10">
       <section className="flex flex-col gap-3">
@@ -94,18 +126,17 @@ const TokenPage = () => {
             type="text"
             className="input text-black rounded-none rounded-r-lg bg-gray-50 border text-gray-900 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5"
             placeholder="Type your bid"
+            onChange={handleBidChange}
           />
         </div>
         <button
           onClick={handlePlaceBid}
           className="btn bg-secondary hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus w-fit font-mono mt-3"
+          disabled={maxBid ? bid < maxBid : true}
         >
           Place bid
         </button>
-        <span className="font-mono mt-3">
-          Current bid:{" "}
-          {Math.max(...auction.bids.map(({ bid_price }) => bid_price))} $
-        </span>
+        <span className="font-mono mt-3">Current bid: {maxBid} $</span>
       </section>
     </main>
   );
