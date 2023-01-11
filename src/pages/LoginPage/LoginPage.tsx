@@ -22,7 +22,7 @@ const LoginPage = () => {
             placeholder="Confirm Password"
             className="input w-full max-w-xs rounded-2xl text-black mt-5"
           />
-          <button className="btn px-16 bg-secondary  hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus mt-16 ml-6 w-fit">
+          <button className="btn px-16 btn-primary mt-16 ml-6 w-fit">
             Login
           </button>
         </section>

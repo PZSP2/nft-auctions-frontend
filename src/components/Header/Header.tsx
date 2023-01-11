@@ -31,7 +31,7 @@ const Header = () => {
         <span className="font-semibold cursor-pointer">Contact</span>
         <button
           onClick={handleSignUpClick}
-          className="btn bg-secondary hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus w-fit"
+          className="btn btn-primary w-fit"
         >
           <UserIcon className="mr-3" />
           Sign up

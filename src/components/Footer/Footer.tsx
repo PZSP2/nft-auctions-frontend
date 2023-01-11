@@ -25,22 +25,6 @@ const Footer = () => {
           Contact
         </span>
       </div>
-      <div className="flex flex-col gap-3 w-80">
-        <span className="font-bold font-mono text-xl">Join newsletter</span>
-        <span className="text-gray">
-          Get exclusive promotions & updates about NFTs straight to your inbox
-        </span>
-        <span className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Enter your email"
-            className="input w-72 text-black"
-          />
-          <button className="btn bg-secondary hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus w-fit">
-            Subscribe
-          </button>
-        </span>
-      </div>
     </footer>
   );
 };

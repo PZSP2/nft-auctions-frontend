@@ -23,7 +23,7 @@ const LandingPage = () => {
           </span>
           <button
             onClick={handleGetStarted}
-            className="btn bg-secondary hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus mt-24 w-fit"
+            className="btn btn-primary mt-24 w-fit"
           >
             <RocketIcon className="mr-3" />
             Get started
