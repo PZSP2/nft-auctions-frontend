@@ -12,8 +12,6 @@ const Header = () => {
 
   const handleLoginClick = () => navigate("/login");
 
-  const handleMarketClick = () => navigate("/browse");
-
   const handleNftsClick = () => navigate("/ownedNfts");
 
   const { isUserLoggedIn, name, logoutUser } = useAuthStore();
@@ -28,14 +26,6 @@ const Header = () => {
         NFT Marketplace
       </div>
       <div className="flex gap-14 items-center">
-        <span
-          className="font-semibold cursor-pointer"
-          onClick={handleMarketClick}
-        >
-          Marketplace
-        </span>
-        <span className="font-semibold cursor-pointer">Rankings</span>
-        <span className="font-semibold cursor-pointer">Contact</span>
         <div className="flex flex-row items-center gap-2">
           {isUserLoggedIn() ? (
             <>
