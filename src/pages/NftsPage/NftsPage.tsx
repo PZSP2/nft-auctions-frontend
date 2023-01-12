@@ -40,8 +40,8 @@ const NftsPage = () => {
     <main className="py-32 px-20 flex items-start flex-col justify-center">
       <div className="flex justify-around w-full">
         <span>
-          <h3 className="text-3xl font-bold">Discover more NFTs</h3>
-          <h4 className="text-xl mt-3">Explore new trending tokens</h4>
+          <h3 className="text-3xl font-bold">Available auctions</h3>
+          <h4 className="text-xl mt-3">Explore and buy your favourite items</h4>
         </span>
         <button
           onClick={handleSeeMore}
@@ -53,7 +53,7 @@ const NftsPage = () => {
       </div>
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
         {nfts.length > 0 &&
-          !isLoading &&
+          !isLoading ? (
           nfts.map(({ nftId, name, fileUri }) => (
             <div
               className="cursor-pointer"
@@ -83,7 +83,16 @@ const NftsPage = () => {
                 </div>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className="flex justify-center items-center w-full">
+          {isLoading ? (
+            <span className="text-2xl font-bold">Loading...</span>
+          ) : (
+            <span className="text-2xl font-bold">No NFTs found</span>
+          )}
+            </div>
+          )}
       </section>
     </main>
   );
