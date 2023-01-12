@@ -8,62 +8,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { API_KEYS } from "../../api/API_KEYS";
 import { useQuery } from "@tanstack/react-query";
-
-const NFTS_MOCK = [
-  {
-    id: 1,
-    name: "Random NFT name",
-    img: nftImageMock1,
-    author: "Piotrus Brzezinski",
-    buyNow: "125 $",
-    currentBid: "16.5$",
-  },
-  {
-    id: 2,
-    name: "Random NFT name",
-    img: nftImageMock2,
-    author: "Piotrus Brzezinski",
-    buyNow: "125 $",
-    currentBid: "16.5$",
-  },
-  {
-    id: 3,
-    name: "Random NFT name",
-    img: nftImageMock3,
-    author: "Piotrus Brzezinski",
-    buyNow: "125 $",
-    currentBid: "16.5$",
-  },
-  {
-    id: 4,
-    name: "Random NFT name",
-    img: nftImageMock1,
-    author: "Piotrus Brzezinski",
-    buyNow: "125 $",
-    currentBid: "16.5$",
-  },
-  {
-    id: 5,
-    name: "Random NFT name",
-    img: nftImageMock2,
-    author: "Piotrus Brzezinski",
-    buyNow: "125 $",
-    currentBid: "16.5$",
-  },
-  {
-    id: 6,
-    name: "Random NFT name",
-    img: nftImageMock3,
-    author: "Piotrus Brzezinski",
-    buyNow: "125 $",
-    currentBid: "16.5$",
-  },
-];
+import { getIpfsImage } from "../../utils/ipfsImageGetter";
 
 type Nft = {
-  id: number;
+  nftId: number;
   name: string;
-  image: string;
+  fileUri: string;
   description: string;
 };
 
@@ -71,10 +21,10 @@ const NftsPage = () => {
   const [nfts, setNfts] = useState<Nft[]>([]);
   const navigate = useNavigate();
   const { schoolId } = useParams<{ schoolId: string }>();
-  const { data: nftsResponse } = useQuery(
+  const { data: nftsResponse, isLoading } = useQuery(
     [API_KEYS.GET_NFTS],
     () => axios.get("/api/nft").then((response) => response),
-    { onSuccess: (response) => handleFetchSuccess(response.data) }
+    { onSuccess: (response) => handleFetchSuccess(response.data.nfts) }
   );
 
   const handleSeeMore = () => {};
@@ -102,36 +52,38 @@ const NftsPage = () => {
         </button>
       </div>
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
-        {nfts.map(({ id, name, image, description }) => (
-          <div
-            className="max-w-xs cursor-pointer"
-            key={id}
-            onClick={() => handleNftClick(id)}
-          >
-            <img
-              src={`data:image/jpeg;base64,${image}`}
-              alt="nft"
-              className="rounded-t-xl"
-            />
-            <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
-              <span className="font-medium text-lg">{name}</span>
-              <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
-                <img src={authorImg} alt="author" />
-                {`Biga mock`}
-              </span>
-              <div className="flex justify-between mt-5 font-mono">
-                <span className="flex gap-1 flex-col">
-                  <span className="text-gray">Min bid</span>
-                  <span>{`125 $`}</span>
+        {nfts.length > 0 &&
+          !isLoading &&
+          nfts.map(({ nftId, name, fileUri, description }) => (
+            <div
+              className="cursor-pointer"
+              key={nftId}
+              onClick={() => handleNftClick(nftId)}
+            >
+              <img
+                src={getIpfsImage(fileUri)}
+                alt="nft"
+                className="rounded-t-xl h-80 max-w-xs"
+              />
+              <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
+                <span className="font-medium text-lg">{name}</span>
+                <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
+                  <img src={authorImg} alt="author" />
+                  {`Biga mock`}
                 </span>
-                <span className="flex gap-1 flex-col">
-                  <span className="text-gray">Current bid</span>
-                  <span>{`150 $`}</span>
-                </span>
+                <div className="flex justify-between mt-5 font-mono">
+                  <span className="flex gap-1 flex-col">
+                    <span className="text-gray">Min bid</span>
+                    <span>{`125 $`}</span>
+                  </span>
+                  <span className="flex gap-1 flex-col">
+                    <span className="text-gray">Current bid</span>
+                    <span>{`150 $`}</span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </section>
     </main>
   );

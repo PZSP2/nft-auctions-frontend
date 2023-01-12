@@ -38,11 +38,11 @@ const BrowsePage = () => {
         {isLoading ? (
           <progress className="progress w-56"></progress>
         ) : (
-          schools.map(({ id, name, address }) => (
+          schools.map(({ schoolId, name, address }) => (
             <div
               className="max-w-xs cursor-pointer"
-              key={id}
-              onClick={() => handleSchoolClick(id)}
+              key={schoolId}
+              onClick={() => handleSchoolClick(schoolId)}
             >
               <img src={SchoolImage} alt="school" className="rounded-t-xl" />
               <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-primaryHoverFocus flex flex-col gap-2 min-h-xl">
