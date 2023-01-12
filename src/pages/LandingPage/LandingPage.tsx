@@ -2,10 +2,20 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as RocketIcon } from "../../assets/icons/rocketIcon.svg";
 import { ReactComponent as LandingImage } from "../../assets/images/landingImage.svg";
 import userAvatar from "../../assets/images/userAvatar.png";
+import { useAuthStore } from "../../stores/AuthStore";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const handleGetStarted = () => navigate("/register");
+  const { isUserLoggedIn } = useAuthStore();
+
+  const handleGetStarted = () => {
+    if (isUserLoggedIn()) {
+      navigate("/browse")
+    } else {
+      navigate("/register");
+    }
+  }
+
   return (
     <>
       <main className="p-20 flex gap-7 justify-center items-center">
