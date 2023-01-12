@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../stores/AuthStore";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
 
-type OwnedNft = {
+export type MinimalNft = {
   nftId: number;
   name: string;
   description: string;
@@ -16,7 +16,6 @@ type OwnedNft = {
 };
 
 const OwnedNftsPage = () => {
-  const [nfts, setNfts] = useState<OwnedNft[]>([]);
   const navigate = useNavigate();
   const { accountId } = useAuthStore();
 
@@ -31,7 +30,7 @@ const OwnedNftsPage = () => {
     return response.data.ownedNfts;
   };
 
-  const { data, isLoading } = useQuery([API_KEYS.GET_NFTS], getOwnedNftsData);
+  const { data, isLoading } = useQuery<MinimalNft[]>([API_KEYS.GET_NFTS], getOwnedNftsData);
 
   if (isLoading) {
     return <progress className="progress w-56"></progress>;
@@ -49,8 +48,8 @@ const OwnedNftsPage = () => {
         </button>
       </div>
       <section className="flex gap-10 mt-16 flex-wrap justify-center w-full">
-        {data.length > 0 ? (
-          data.map(({nftId, name, description, uri, isImage}: any) => (
+        {data!.length > 0 ? (
+          data!.map(({nftId, name, description, uri, isImage}: any) => (
             <div key={nftId} className="max-w-xs">
               <img src={getIpfsImage(uri)} alt="nft" className="rounded-t-xl" />
               <div className="bg-primary p-5 rounded-b-xl text-center">
