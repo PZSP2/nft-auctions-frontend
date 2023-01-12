@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { persist } from 'zustand/middleware'
+
 
 type AuthStoreState = {
   accountId: number | null;
@@ -16,7 +18,8 @@ const initialAuthState: AuthStoreState = {
   name: null,
 }
 
-export const useAuthStore = create<AuthStoreState & AuthStoreActions>((set, get) => ({
+export const useAuthStore = create(persist<AuthStoreActions & AuthStoreState>(
+  (set, get) => ({
   ...initialAuthState,
 
   loginUser: (accountId: number, name: string) => {
@@ -28,4 +31,7 @@ export const useAuthStore = create<AuthStoreState & AuthStoreActions>((set, get)
   isUserLoggedIn: () => {
     return get().accountId !== null;
   }
-}));
+}), {
+  name: 'auth-store',
+  getStorage: () => localStorage,
+}))
