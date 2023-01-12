@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as MarketIcon } from "../../assets/icons/marketIcon.svg";
 import { ReactComponent as UserIcon } from "../../assets/icons/userIcon.svg";
+import { useAuthStore } from "../../stores/AuthStore";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -9,7 +10,13 @@ const Header = () => {
 
   const handleSignUpClick = () => navigate("/register");
 
+  const handleLoginClick = () => navigate("/login");
+
   const handleMarketClick = () => navigate("/browse");
+
+  const handleNftsClick = () => navigate("/ownedNfts");
+
+  const { isUserLoggedIn, name, logoutUser } = useAuthStore();
 
   return (
     <header className="flex justify-between px-20 py-9">
@@ -29,13 +36,45 @@ const Header = () => {
         </span>
         <span className="font-semibold cursor-pointer">Rankings</span>
         <span className="font-semibold cursor-pointer">Contact</span>
-        <button
-          onClick={handleSignUpClick}
-          className="btn btn-primary w-fit"
-        >
-          <UserIcon className="mr-3" />
-          Sign up
-        </button>
+        <div className="flex flex-row items-center gap-2">
+          {isUserLoggedIn() ? (
+            <>
+              <span className="text-white font-semibold text-xl mr-5">
+                {name}
+              </span>
+              <button
+                className="btn btn-secondary"
+                onClick={() => handleNftsClick()}
+                >
+                MY NFTS
+                </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => logoutUser()}
+                >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={handleLoginClick}
+                className="btn btn-secondary w-fit"
+              >
+                <UserIcon className="mr-3" />
+                Login
+              </button>
+                
+              <button
+                onClick={handleSignUpClick}
+                className="btn btn-primary w-fit"
+              >
+                <UserIcon className="mr-3" />
+                Sign up
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );
