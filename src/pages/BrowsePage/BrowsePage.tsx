@@ -45,7 +45,7 @@ const BrowsePage = () => {
               onClick={() => handleSchoolClick(schoolId)}
             >
               <img src={SchoolImage} alt="school" className="rounded-t-xl" />
-              <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-primaryHoverFocus flex flex-col gap-2 min-h-xl">
+              <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-primaryHoverFocus/30 flex flex-col gap-2 min-h-xl">
                 <span className="font-medium text-xl">{name}</span>
                 <span className="">{address}</span>
               </div>
