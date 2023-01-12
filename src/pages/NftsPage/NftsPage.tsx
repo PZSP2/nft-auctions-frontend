@@ -32,6 +32,7 @@ const NftsPage = () => {
         name: nft.nftName,
         fileUri: nft.nftUri,
         nftId: nft.auctionId,
+        status: nft.status,
       }))
     );
   };
@@ -54,7 +55,7 @@ const NftsPage = () => {
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
         {nfts.length > 0 &&
           !isLoading ? (
-          nfts.map(({ nftId, name, fileUri }) => (
+          nfts.filter((nft) => nft.status === "ACTIVE").map(({ name, fileUri, nftId }) => (
             <div
               className="cursor-pointer"
               key={nftId}
