@@ -38,7 +38,7 @@ const TokenPage = () => {
     isLoading: loadingNft,
   } = useMutation(
     [API_KEYS.GET_NFT],
-    () => axios.get(`/api/nft/${nftId}`).then((res) => res),
+    () => axios.get(`/api/auction?nftId=${nftId}`).then((res) => res),
     { onSuccess: (response) => handleFetchSuccess(response.data) }
   );
 
@@ -78,7 +78,7 @@ const TokenPage = () => {
     return () => clearInterval(auctionTimer);
   }, [nftId, secondsLeft]);
 
-  const handleFetchSuccess = (data: Auction[]) => setAuction(data);
+  const handleFetchSuccess = (data: Auction[]) => setAuction(data[0]);
 
   const handleBidChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setBid(Number(e.target.value));
