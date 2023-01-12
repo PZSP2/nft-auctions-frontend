@@ -10,21 +10,14 @@ import { API_KEYS } from "../../api/API_KEYS";
 import { useQuery } from "@tanstack/react-query";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
 
-type Nft = {
-  nftId: number;
-  name: string;
-  fileUri: string;
-  description: string;
-};
-
 const NftsPage = () => {
-  const [nfts, setNfts] = useState<Nft[]>([]);
+  const [nfts, setNfts] = useState([]);
   const navigate = useNavigate();
   const { schoolId } = useParams<{ schoolId: string }>();
   const { data: nftsResponse, isLoading } = useQuery(
     [API_KEYS.GET_NFTS],
-    () => axios.get("/api/nft").then((response) => response),
-    { onSuccess: (response) => handleFetchSuccess(response.data.nfts) }
+    () => axios.get(`/api/school/${schoolId}`).then((response) => response),
+    { onSuccess: (response) => handleFetchSuccess(response.data.auctions) }
   );
 
   const handleSeeMore = () => {};
@@ -32,8 +25,15 @@ const NftsPage = () => {
   const handleNftClick = (nftId: number) =>
     navigate(`/browse/${schoolId}/${nftId}`);
 
-  const handleFetchSuccess = (nftsData: Nft[]) => {
-    setNfts(nftsData);
+  const handleFetchSuccess = (nftsData: any) => {
+    /**TODO: Tutaj trzeba dodac autora i auctionId zamienic na nftId jak Wojtek doda do response'a. Bo teraz jest przekierowanie pod zly link */
+    setNfts(
+      nftsData.map((nft: any) => ({
+        name: nft.nftName,
+        fileUri: nft.nftUri,
+        nftId: nft.auctionId,
+      }))
+    );
   };
 
   return (
@@ -54,7 +54,7 @@ const NftsPage = () => {
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
         {nfts.length > 0 &&
           !isLoading &&
-          nfts.map(({ nftId, name, fileUri, description }) => (
+          nfts.map(({ nftId, name, fileUri }) => (
             <div
               className="cursor-pointer"
               key={nftId}
@@ -69,7 +69,7 @@ const NftsPage = () => {
                 <span className="font-medium text-lg">{name}</span>
                 <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
                   <img src={authorImg} alt="author" />
-                  {`Biga mock`}
+                  {"Biga mock"}
                 </span>
                 <div className="flex justify-between mt-5 font-mono">
                   <span className="flex gap-1 flex-col">
