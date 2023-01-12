@@ -17,6 +17,9 @@ module.exports = {
       fontFamily: {
         spaceMono: ["Space Mono", "monospace"],
       },
+      minHeight: {
+        xl: "140px",
+      },
     },
   },
   daisyui: {
@@ -26,9 +29,9 @@ module.exports = {
           ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
           primary: "#A259FF",
           "primary-focus": "#7b14ff",
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   plugins: [require("daisyui")],
 };
