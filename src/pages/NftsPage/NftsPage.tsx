@@ -27,13 +27,16 @@ const NftsPage = () => {
 
   const handleFetchSuccess = (nftsData: any) => {
     /**TODO: Tutaj trzeba dodac autora i auctionId zamienic na nftId jak Wojtek doda do response'a. Bo teraz jest przekierowanie pod zly link */
+    console.log(nftsData);
     setNfts(
-      nftsData.map((nft: any) => ({
-        name: nft.nftName,
-        fileUri: nft.nftUri,
-        nftId: nft.auctionId,
-        status: nft.status,
-      }))
+      nftsData
+        .filter((nft: any) => nft.status !== "WON")
+        .map((nft: any) => ({
+          name: nft.nftName,
+          fileUri: nft.nftUri,
+          nftId: nft.auctionId,
+          status: nft.status,
+        }))
     );
   };
 
@@ -53,9 +56,8 @@ const NftsPage = () => {
         </button>
       </div>
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
-        {nfts.length > 0 &&
-          !isLoading ? (
-          nfts.filter((nft) => nft.status === "ACTIVE").map(({ name, fileUri, nftId }) => (
+        {nfts.length > 0 && !isLoading ? (
+          nfts.map(({ name, fileUri, nftId }) => (
             <div
               className="cursor-pointer"
               key={nftId}
@@ -87,13 +89,13 @@ const NftsPage = () => {
           ))
         ) : (
           <div className="flex justify-center items-center w-full">
-          {isLoading ? (
-            <span className="text-2xl font-bold">Loading...</span>
-          ) : (
-            <span className="text-2xl font-bold">No NFTs found</span>
-          )}
-            </div>
-          )}
+            {isLoading ? (
+              <span className="text-2xl font-bold">Loading...</span>
+            ) : (
+              <span className="text-2xl font-bold">No NFTs found</span>
+            )}
+          </div>
+        )}
       </section>
     </main>
   );

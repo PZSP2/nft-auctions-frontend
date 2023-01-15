@@ -1,6 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { ReactComponent as MarketIcon } from "../../assets/icons/marketIcon.svg";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleMarketplaceClick = () => navigate("/browse");
+
   return (
     <footer className="px-20 flex gap-5 absolute bottom-14 w-full justify-center">
       <div className="flex flex-col gap-6 w-80">
@@ -15,14 +20,11 @@ const Footer = () => {
       </div>
       <div className="flex flex-col items-center gap-3 w-80">
         <span className="font-bold font-mono text-xl">Explore</span>
-        <span className="text-gray cursor-pointer hover:text-white">
+        <span
+          className="text-gray cursor-pointer hover:text-white"
+          onClick={handleMarketplaceClick}
+        >
           Marketplace
-        </span>
-        <span className="text-gray cursor-pointer hover:text-white">
-          Rankings
-        </span>
-        <span className="text-gray cursor-pointer hover:text-white">
-          Contact
         </span>
       </div>
     </footer>

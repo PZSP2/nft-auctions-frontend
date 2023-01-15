@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SchoolImage from "../../assets/images/schoolImage.jpg";
 import { ReactComponent as SearchIcon } from "../../assets/icons/searchIcon.svg";
@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 const BrowsePage = () => {
   const [schools, setSchools] = useState([]);
   const navigate = useNavigate();
+  const [searchInput, setSearchInput] = useState("");
   const { data: schoolsResponse, isLoading } = useQuery(
     [API_KEYS.GET_NFTS],
     () => axios.get("/api/school").then((response) => response),
@@ -17,6 +18,22 @@ const BrowsePage = () => {
 
   const handleSchoolClick = (schoolId: number) =>
     navigate(`/browse/${schoolId}`);
+
+  const handleChangeInput = (e: any) => {
+    e.preventDefault();
+    setSearchInput(e.target.value);
+  };
+
+  useEffect(() => {
+    if (!schoolsResponse) return;
+    searchInput !== ""
+      ? setSchools(
+          schoolsResponse.data.filter((school: any) =>
+            school.name.match(searchInput)
+          )
+        )
+      : setSchools(schoolsResponse.data);
+  }, [searchInput]);
 
   return (
     <main className="py-32 px-20 flex items-start flex-col justify-center">
@@ -30,6 +47,7 @@ const BrowsePage = () => {
             type="text"
             placeholder="Search school..."
             className="input input-bordered w-full max-w-xs bg-transparent border-primary pr-12"
+            onChange={handleChangeInput}
           />
           <SearchIcon className="absolute top-3 right-3 cursor-pointer" />
         </span>
