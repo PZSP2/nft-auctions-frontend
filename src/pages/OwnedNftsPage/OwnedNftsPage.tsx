@@ -20,17 +20,20 @@ const OwnedNftsPage = () => {
   const { accountId } = useAuthStore();
 
   const handleCreateNft = () => {
+    navigate("/createNft");
   };
 
-  const handleSellNft = (nftId: number) => {
-  };
+  const handleSellNft = (nftId: number) => {};
 
   const getOwnedNftsData = async () => {
     const response = await axios.get(`/api/account/${accountId}`);
     return response.data.ownedNfts;
   };
 
-  const { data, isLoading } = useQuery<MinimalNft[]>([API_KEYS.GET_NFTS], getOwnedNftsData);
+  const { data, isLoading } = useQuery<MinimalNft[]>(
+    [API_KEYS.GET_NFTS],
+    getOwnedNftsData
+  );
 
   if (isLoading) {
     return <progress className="progress w-56"></progress>;
@@ -49,24 +52,27 @@ const OwnedNftsPage = () => {
       </div>
       <section className="flex gap-10 mt-16 flex-wrap justify-center w-full">
         {data!.length > 0 ? (
-          data!.map(({nftId, name, description, uri, isImage}: any) => (
+          data!.map(({ nftId, name, description, uri, isImage }: any) => (
             <div key={nftId} className="max-w-xs">
               <img src={getIpfsImage(uri)} alt="nft" className="rounded-t-xl" />
               <div className="bg-primary p-5 rounded-b-xl text-center">
                 <p className="font-bold text-2xl">{name}</p>
-                <p className="font-light mt-2">
-                  {description}
-                </p>
-                <button className="btn btn-primary mt-5" onClick={() => handleSellNft(nftId)}>
+                <p className="font-light mt-2">{description}</p>
+                <button
+                  className="btn btn-primary mt-5"
+                  onClick={() => handleSellNft(nftId)}
+                >
                   Sell
                 </button>
               </div>
             </div>
-          )
-        )) : (
+          ))
+        ) : (
           <div className="flex flex-col items-center bg-black/20 p-10 rounded-xl">
             <h3 className="text-3xl font-bold">You don't have any NFTs yet</h3>
-            <h4 className="text-xl mt-3">Create or buy some to see them here</h4>
+            <h4 className="text-xl mt-3">
+              Create or buy some to see them here
+            </h4>
           </div>
         )}
       </section>
