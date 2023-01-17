@@ -30,16 +30,12 @@ const OwnedNftsPage = () => {
     return response.data.ownedNfts;
   };
 
-  const { data, isLoading } = useQuery<MinimalNft[]>(
+  const { data } = useQuery<MinimalNft[]>(
     [API_KEYS.GET_OWNED_NFTS],
     getOwnedNftsData
   );
 
-  if (isLoading) {
-    return <progress className="progress w-56" />;
-  }
-
-  return (
+  return data ? (
     <main className="py-32 px-20 flex items-start flex-col justify-center">
       <div className="flex justify-around w-full">
         <span>
@@ -51,8 +47,8 @@ const OwnedNftsPage = () => {
         </button>
       </div>
       <section className="flex gap-10 mt-16 flex-wrap justify-center w-full">
-        {data!.length > 0 ? (
-          data!.map(({ nftId, name, description, uri, isImage }: any) => (
+        {data.length > 0 ? (
+          data.map(({ nftId, name, description, uri, isImage }: any) => (
             <div
               key={nftId}
               className="max-w-xs min-w-[15rem] bg-gray/5 rounded-xl"
@@ -60,9 +56,9 @@ const OwnedNftsPage = () => {
               <img
                 src={getIpfsImage(uri)}
                 alt="nft"
-                className="rounded-t-xl min-h-[10rem] max-h-96"
+                className="rounded-t-xl h-80 w-80"
               />
-              <div className="bg-primary p-5 rounded-b-xl text-center">
+              <div className="p-5 rounded-b-xl text-center">
                 <p className="font-bold text-2xl">{name}</p>
                 <p className="font-light mt-2">{description}</p>
                 <button
@@ -84,6 +80,8 @@ const OwnedNftsPage = () => {
         )}
       </section>
     </main>
+  ) : (
+    <progress className="progress w-56" />
   );
 };
 
