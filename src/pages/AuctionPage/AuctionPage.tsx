@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { API_KEYS } from "../../api/API_KEYS";
@@ -33,7 +33,7 @@ type Nft = {
   nftId: number;
   name: string;
   description: string;
-  fileUri: string;
+  uri: string;
   isImage: boolean;
   issuer: {
     accountId: number;
@@ -46,28 +46,31 @@ type Nft = {
 }
 
 
-const TokenPage = () => {
+const AuctionPage = () => {
   const marketplaceStore = useMarketplaceStore();
+  const queryClient = useQueryClient();
   const [bid, setBid] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [auction, setAuction] = useState<Auction>();
   const [nft, setNft] = useState<Nft>();
-  const { schoolId, nftId } = useParams<{ schoolId: string, nftId: string }>();
+  const { schoolId, auctionId } = useParams<{ schoolId: string, auctionId: string }>();
   const {
     data: auctionResponse,
-    mutateAsync,
     isLoading: loadingAuction,
-  } = useMutation(
-    [API_KEYS.GET_NFT],
-    () => axios.get(`/api/auction/?nftId=${nftId}`).then((res) => res),
-    { onSuccess: (response) => handleAuctionFetchSuccess(response.data.auctions) }
-  );
+  } = useQuery({
+    queryKey: [API_KEYS.GET_AUCTION],
+    queryFn: () => axios.get<Auction>(`/api/auction/${auctionId}`).then((res) => res),
+    onSuccess: (response) => handleAuctionFetchSuccess(response.data)
+  });
 
-  const { data: nftResponse, isLoading: loadingNft } = useQuery(
-    [API_KEYS.GET_NFT, nftId],
-    () => axios.get(`/api/nft/${nftId}`).then((res) => res),
-    { onSuccess: (response) => handleNftFetchSuccess(response.data) }
-  );
+  const nftId = auctionResponse?.data.nft.nftId;
+
+  const { data: nftResponse, isLoading: loadingNft } = useQuery({
+    queryKey: [API_KEYS.GET_NFT, nftId],
+    queryFn: () => axios.get<Nft>(`/api/nft/${nftId}`).then((res) => res),
+    onSuccess: (response) => handleNftFetchSuccess(response.data),
+    enabled: !!nftId
+  });
 
   const {
     data: bidResponse,
@@ -78,23 +81,19 @@ const TokenPage = () => {
     () =>
       axios
         .post(`/api/auction/${nftId}/bid`, {
-          bidderId: 1,
           bidAmount: bid,
         })
         .then((res) => res),
     {
       onSuccess: () => {
-        nftId && mutateAsync();
+        queryClient.invalidateQueries({queryKey: [API_KEYS.GET_AUCTION]});
       },
       onError: () => {
-        alert("Bid too low!");
+        if (bidResponse?.status === 400) alert("Bid amount is too low!");
+        else alert("Something went wrong!");
       },
     }
   );
-
-  useEffect(() => {
-    nftId && mutateAsync();
-  }, [nftId]);
 
   useEffect(() => {
     const auctionTimer = setInterval(() => {
@@ -112,8 +111,8 @@ const TokenPage = () => {
     }
   }, [schoolId]);
 
-  const handleAuctionFetchSuccess = (auctions: Auction[]) => {
-    setAuction(auctions[0]);
+  const handleAuctionFetchSuccess = (auction: Auction) => {
+    setAuction(auction);
   }
 
   const handleNftFetchSuccess = (nft: Nft) => {
@@ -155,7 +154,7 @@ const TokenPage = () => {
     <main className="py-32 px-20 flex justify-center gap-10">
       <section className="flex flex-col gap-3">
         <img
-          src={getIpfsImage(nft!.fileUri)}
+          src={getIpfsImage(nft!.uri)}
           alt="nft"
           className="rounded-xl w-96"
         />
@@ -194,7 +193,7 @@ const TokenPage = () => {
         </div>
         <button
           onClick={handlePlaceBid}
-          className="btn bg-secondary hover:bg-secondaryHoverFocus focus:bg-secondaryHoverFocus w-fit font-mono mt-3"
+          className="btn btn-primary w-fit font-mono mt-3"
           disabled={auction?.currentPrice ? bid <= auction?.currentPrice : true}
         >
           Place bid
@@ -217,4 +216,4 @@ const TokenPage = () => {
   );
 };
 
-export default TokenPage;
+export default AuctionPage;

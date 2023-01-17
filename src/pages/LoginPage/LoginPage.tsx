@@ -25,6 +25,9 @@ const LoginPage = () => {
       loginUser(data.accountId, data.name);
       navigate("/browse");
     },
+    onError: (error) => {
+      alert("Invalid username or password!");
+    },
   });
 
   const onLoginClick = () => {

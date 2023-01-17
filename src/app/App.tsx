@@ -9,7 +9,7 @@ import LoginPage from "../pages/LoginPage";
 import NftsPage from "../pages/NftsPage";
 import OwnedNftsPage from "../pages/OwnedNftsPage";
 import RegisterPage from "../pages/RegisterPage";
-import TokenPage from "../pages/TokenPage";
+import AuctionPage from "../pages/AuctionPage";
 
 const App = () => {
   return (
@@ -32,7 +32,7 @@ const App = () => {
           {/* these aren't school protected - 
            if user visits a link, schoolId will be automatically set */}
           <Route element={<NftsPage />} path="/browse/:schoolId" />
-          <Route element={<TokenPage />} path="/browse/:schoolId/:nftId" />
+          <Route element={<AuctionPage />} path="/browse/:schoolId/:auctionId" />
         </Route>
       </Routes>
       <Footer />

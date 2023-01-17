@@ -10,14 +10,14 @@ import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 
 type AuctionFilter = "all" | "active" | "won" | "expired";
 
-const NftsPage = () => {
+const AuctionPage = () => {
   const navigate = useNavigate();
   const marketplaceStore = useMarketplaceStore();
   const { schoolId } = useParams<{ schoolId: string }>();
   const [auctions, setAuctions] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState<AuctionFilter>("all");
-  const { data: nftsResponse, isLoading } = useQuery(
+  const { data: schoolResponse, isLoading } = useQuery(
     [API_KEYS.GET_SCHOOL_INFO],
     () => axios.get(`/api/school/${schoolId}`).then((response) => response),
     { onSuccess: (response) => handleFetchSuccess(response.data.auctions) }
@@ -30,9 +30,9 @@ const NftsPage = () => {
     navigate(`/ownedNfts`);
 
   const getMappedAndFilteredNfts = () => {
-    if (isLoading || !nftsResponse?.data.auctions) return [];
+    if (isLoading || !schoolResponse?.data.auctions) return [];
     /**TODO: Tutaj trzeba dodac autora i auctionId zamienic na nftId jak Wojtek doda do response'a. Bo teraz jest przekierowanie pod zly link */
-    return nftsResponse!.data.auctions
+    return schoolResponse!.data.auctions
       .map((nft: any) => ({
         name: nft.nftName,
         fileUri: nft.nftUri,
@@ -62,7 +62,7 @@ const NftsPage = () => {
   useEffect(() => {
     if (isLoading) return;
     setAuctions(getMappedAndFilteredNfts());
-  }, [nameFilter, statusFilter, nftsResponse]);
+  }, [nameFilter, statusFilter, schoolResponse]);
 
   // when user visits a link from a different school, change it in our store too
   useEffect(() => {
@@ -77,13 +77,13 @@ const NftsPage = () => {
       <div className="flex justify-around w-full">
         <span>
           <h3 className="text-3xl font-bold">Available auctions</h3>
-          <h4 className="text-xl mt-3">Explore and buy items from students of <span className="font-bold">{nftsResponse?.data.name}</span></h4>
+          <h4 className="text-xl mt-3">Explore and buy items from students of <span className="font-bold">{schoolResponse?.data.name}</span></h4>
         </span>
         <div className="flex flex-row gap-5">
           <select 
             className="select select-bordered w-32"
             onChange={handleStatusFilterChange}
-            disabled={nftsResponse?.data.auctions.length === 0}
+            disabled={schoolResponse?.data.auctions.length === 0}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -96,7 +96,7 @@ const NftsPage = () => {
               placeholder="Search..."
               className="input input-bordered w-full max-w-xs bg-transparent pr-12"
               onChange={handleSearchInput}
-              disabled={nftsResponse?.data.auctions.length === 0}
+              disabled={schoolResponse?.data.auctions.length === 0}
             />
             <SearchIcon className="absolute top-3 right-3 cursor-pointer" />
           </span>
@@ -152,4 +152,4 @@ const NftsPage = () => {
   );
 };
 
-export default NftsPage;
+export default AuctionPage;
