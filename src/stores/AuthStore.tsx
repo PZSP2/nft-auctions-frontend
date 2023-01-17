@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from 'zustand/middleware'
+import { useMarketplaceStore } from "./MarketplaceStore";
 
 
 type AuthStoreState = {
@@ -26,6 +27,7 @@ export const useAuthStore = create(persist<AuthStoreActions & AuthStoreState>(
     set({ accountId, name });
   },
   logoutUser: () => {
+    useMarketplaceStore.getState().clearChosenSchool();
     set(initialAuthState);
   },
   isUserLoggedIn: () => {

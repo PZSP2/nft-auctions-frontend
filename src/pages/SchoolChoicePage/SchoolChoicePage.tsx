@@ -5,10 +5,12 @@ import { ReactComponent as SearchIcon } from "../../assets/icons/searchIcon.svg"
 import { API_KEYS } from "../../api/API_KEYS";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 
 const BrowsePage = () => {
-  const [schools, setSchools] = useState([]);
   const navigate = useNavigate();
+  const { setChosenSchool } = useMarketplaceStore();
+  const [schools, setSchools] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const { data: schoolsResponse, isLoading } = useQuery(
     [API_KEYS.GET_SCHOOLS],
@@ -16,8 +18,10 @@ const BrowsePage = () => {
     { onSuccess: (response) => setSchools(response.data) }
   );
 
-  const handleSchoolClick = (schoolId: number) =>
+  const handleSchoolClick = (schoolId: number) => {
+    setChosenSchool(schoolId);
     navigate(`/browse/${schoolId}`);
+  };
 
   const handleChangeInput = (e: any) => {
     e.preventDefault();

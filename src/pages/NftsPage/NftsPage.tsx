@@ -6,17 +6,19 @@ import axios from "axios";
 import { API_KEYS } from "../../api/API_KEYS";
 import { useQuery } from "@tanstack/react-query";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
+import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 
 type AuctionFilter = "all" | "active" | "won" | "expired";
 
 const NftsPage = () => {
-  const [auctions, setAuctions] = useState([]);
   const navigate = useNavigate();
+  const marketplaceStore = useMarketplaceStore();
   const { schoolId } = useParams<{ schoolId: string }>();
+  const [auctions, setAuctions] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState<AuctionFilter>("all");
   const { data: nftsResponse, isLoading } = useQuery(
-    [API_KEYS.GET_AUCTIONS],
+    [API_KEYS.GET_SCHOOL_INFO],
     () => axios.get(`/api/school/${schoolId}`).then((response) => response),
     { onSuccess: (response) => handleFetchSuccess(response.data.auctions) }
   );
@@ -61,6 +63,14 @@ const NftsPage = () => {
     if (isLoading) return;
     setAuctions(getMappedAndFilteredNfts());
   }, [nameFilter, statusFilter, nftsResponse]);
+
+  // when user visits a link from a different school, change it in our store too
+  useEffect(() => {
+    let parsedSchoolId = parseInt(schoolId!);
+    if (parsedSchoolId !== marketplaceStore.schoolId) {
+      marketplaceStore.setChosenSchool(parsedSchoolId);
+    }
+  }, [schoolId]);
 
   return (
     <main className="py-32 px-20 flex items-start flex-col justify-center">

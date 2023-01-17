@@ -3,14 +3,21 @@ import { ReactComponent as RocketIcon } from "../../assets/icons/rocketIcon.svg"
 import { ReactComponent as LandingImage } from "../../assets/images/landingImage.svg";
 import userAvatar from "../../assets/images/userAvatar.png";
 import { useAuthStore } from "../../stores/AuthStore";
+import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const { isUserLoggedIn } = useAuthStore();
+  const { isSchoolChosen } = useMarketplaceStore();
 
   const handleGetStarted = () => {
     if (isUserLoggedIn()) {
-      navigate("/browse")
+      if (isSchoolChosen()) {
+        // this will redirect to /browse/schoolId
+        navigate("/browse");
+      } else {
+        navigate("/school")
+      }
     } else {
       navigate("/register");
     }

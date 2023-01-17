@@ -5,6 +5,7 @@ import { API_KEYS } from "../../api/API_KEYS";
 import axios from "axios";
 import { MinimalNft } from "../OwnedNftsPage/OwnedNftsPage";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
+import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 
 type Bid = {
   auctionId: number,
@@ -46,11 +47,12 @@ type Nft = {
 
 
 const TokenPage = () => {
+  const marketplaceStore = useMarketplaceStore();
   const [bid, setBid] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [auction, setAuction] = useState<Auction>();
   const [nft, setNft] = useState<Nft>();
-  const { nftId } = useParams<{ nftId: string }>();
+  const { schoolId, nftId } = useParams<{ schoolId: string, nftId: string }>();
   const {
     data: auctionResponse,
     mutateAsync,
@@ -102,6 +104,13 @@ const TokenPage = () => {
 
     return () => clearInterval(auctionTimer);
   }, [nftId, secondsLeft]);
+
+  useEffect(() => {
+    let parsedSchoolId = parseInt(schoolId!);
+    if (parsedSchoolId !== marketplaceStore.schoolId) {
+      marketplaceStore.setChosenSchool(parsedSchoolId);
+    }
+  }, [schoolId]);
 
   const handleAuctionFetchSuccess = (auctions: Auction[]) => {
     setAuction(auctions[0]);
