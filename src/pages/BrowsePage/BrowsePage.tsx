@@ -11,7 +11,7 @@ const BrowsePage = () => {
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
   const { data: schoolsResponse, isLoading } = useQuery(
-    [API_KEYS.GET_NFTS],
+    [API_KEYS.GET_SCHOOLS],
     () => axios.get("/api/school").then((response) => response),
     { onSuccess: (response) => setSchools(response.data) }
   );
@@ -29,11 +29,11 @@ const BrowsePage = () => {
     searchInput !== ""
       ? setSchools(
           schoolsResponse.data.filter((school: any) =>
-            school.name.match(searchInput)
+            school.name.toLowerCase().includes(searchInput.toLowerCase())
           )
         )
       : setSchools(schoolsResponse.data);
-  }, [searchInput]);
+  }, [searchInput, schoolsResponse]);
 
   return (
     <main className="py-32 px-20 flex items-start flex-col justify-center">
