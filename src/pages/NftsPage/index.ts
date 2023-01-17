@@ -1,1 +1,1 @@
-export { default } from "./AuctionsPage";
+export { default } from "./NftsPage";

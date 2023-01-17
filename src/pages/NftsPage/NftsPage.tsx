@@ -10,7 +10,7 @@ import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 
 type AuctionFilter = "all" | "active" | "won" | "expired";
 
-const AuctionPage = () => {
+const NftsPage = () => {
   const navigate = useNavigate();
   const marketplaceStore = useMarketplaceStore();
   const { schoolId } = useParams<{ schoolId: string }>();
@@ -26,8 +26,7 @@ const AuctionPage = () => {
   const handleNftClick = (nftId: number) =>
     navigate(`/browse/${schoolId}/${nftId}`);
 
-  const handleOwnedNftsClick = () =>
-    navigate(`/ownedNfts`);
+  const handleOwnedNftsClick = () => navigate(`/ownedNfts`);
 
   const getMappedAndFilteredNfts = () => {
     if (isLoading || !schoolResponse?.data.auctions) return [];
@@ -39,10 +38,13 @@ const AuctionPage = () => {
         nftId: nft.auctionId,
         status: nft.status,
       }))
-      .filter((nft: any) => nft.status.toLowerCase() === statusFilter || statusFilter === "all")
+      .filter(
+        (nft: any) =>
+          nft.status.toLowerCase() === statusFilter || statusFilter === "all"
+      )
       .filter((nft: any) => {
         if (nameFilter.length === 0) return true;
-        return nft.name.toLowerCase().includes(nameFilter.toLowerCase())
+        return nft.name.toLowerCase().includes(nameFilter.toLowerCase());
       });
   };
 
@@ -77,10 +79,13 @@ const AuctionPage = () => {
       <div className="flex justify-around w-full">
         <span>
           <h3 className="text-3xl font-bold">Available auctions</h3>
-          <h4 className="text-xl mt-3">Explore and buy items from students of <span className="font-bold">{schoolResponse?.data.name}</span></h4>
+          <h4 className="text-xl mt-3">
+            Explore and buy items from students of{" "}
+            <span className="font-bold">{schoolResponse?.data.name}</span>
+          </h4>
         </span>
         <div className="flex flex-row gap-5">
-          <select 
+          <select
             className="select select-bordered w-32"
             onChange={handleStatusFilterChange}
             disabled={schoolResponse?.data.auctions.length === 0}
@@ -113,7 +118,7 @@ const AuctionPage = () => {
               <img
                 src={getIpfsImage(fileUri)}
                 alt="nft"
-                className="rounded-t-xl h-80 max-w-xs"
+                className="rounded-t-xl h-80 w-80 max-w-xs"
               />
               <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
                 <span className="font-medium text-lg">{name}</span>
@@ -138,13 +143,22 @@ const AuctionPage = () => {
           <div className="flex flex-col justify-center items-center bg-black/20 p-10 rounded-xl">
             {isLoading ? (
               <progress className="progress w-56"></progress>
-            ) : (<>
-              <p className="text-2xl font-bold">No auctions found!</p>
-              <p className="text-xl font-light">
-                Want to sell an item? Take a look at your 
-                <span className="link link-primary link-hover" onClick={() => handleOwnedNftsClick()}> owned NFTs</span>.
-              </p>
-            </>)}
+            ) : (
+              <>
+                <p className="text-2xl font-bold">No auctions found!</p>
+                <p className="text-xl font-light">
+                  Want to sell an item? Take a look at your
+                  <span
+                    className="link link-primary link-hover"
+                    onClick={() => handleOwnedNftsClick()}
+                  >
+                    {" "}
+                    owned NFTs
+                  </span>
+                  .
+                </p>
+              </>
+            )}
           </div>
         )}
       </section>
@@ -152,4 +166,4 @@ const AuctionPage = () => {
   );
 };
 
-export default AuctionPage;
+export default NftsPage;

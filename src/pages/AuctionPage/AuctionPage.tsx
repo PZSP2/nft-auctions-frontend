@@ -8,25 +8,25 @@ import { getIpfsImage } from "../../utils/ipfsImageGetter";
 import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 
 type Bid = {
-  auctionId: number,
-  createdAt: string,
+  auctionId: number;
+  createdAt: string;
   bidder: {
-    accountId: number,
-    name: string
-  },
-  price: number
-}
+    accountId: number;
+    name: string;
+  };
+  price: number;
+};
 
 type Auction = {
   auctionId: number;
-  bids: Bid[],
-  currentPrice: number,
-  endDate: string,
-  status: string,
-  nft: MinimalNft,
-  startDate: string,
-  startingPrice: number,
-  winningBid: Bid
+  bids: Bid[];
+  currentPrice: number;
+  endDate: string;
+  status: string;
+  nft: MinimalNft;
+  startDate: string;
+  startingPrice: number;
+  winningBid: Bid;
 };
 
 type Nft = {
@@ -42,9 +42,8 @@ type Nft = {
   owner: {
     accountId: number;
     name: string;
-  }
-}
-
+  };
+};
 
 const AuctionPage = () => {
   const marketplaceStore = useMarketplaceStore();
@@ -53,14 +52,15 @@ const AuctionPage = () => {
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [auction, setAuction] = useState<Auction>();
   const [nft, setNft] = useState<Nft>();
-  const { schoolId, auctionId } = useParams<{ schoolId: string, auctionId: string }>();
-  const {
-    data: auctionResponse,
-    isLoading: loadingAuction,
-  } = useQuery({
+  const { schoolId, auctionId } = useParams<{
+    schoolId: string;
+    auctionId: string;
+  }>();
+  const { data: auctionResponse, isLoading: loadingAuction } = useQuery({
     queryKey: [API_KEYS.GET_AUCTION],
-    queryFn: () => axios.get<Auction>(`/api/auction/${auctionId}`).then((res) => res),
-    onSuccess: (response) => handleAuctionFetchSuccess(response.data)
+    queryFn: () =>
+      axios.get<Auction>(`/api/auction/${auctionId}`).then((res) => res),
+    onSuccess: (response) => handleAuctionFetchSuccess(response.data),
   });
 
   const nftId = auctionResponse?.data.nft.nftId;
@@ -69,7 +69,7 @@ const AuctionPage = () => {
     queryKey: [API_KEYS.GET_NFT, nftId],
     queryFn: () => axios.get<Nft>(`/api/nft/${nftId}`).then((res) => res),
     onSuccess: (response) => handleNftFetchSuccess(response.data),
-    enabled: !!nftId
+    enabled: !!nftId,
   });
 
   const {
@@ -86,7 +86,7 @@ const AuctionPage = () => {
         .then((res) => res),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: [API_KEYS.GET_AUCTION]});
+        queryClient.invalidateQueries({ queryKey: [API_KEYS.GET_AUCTION] });
       },
       onError: () => {
         if (bidResponse?.status === 400) alert("Bid amount is too low!");
@@ -113,11 +113,11 @@ const AuctionPage = () => {
 
   const handleAuctionFetchSuccess = (auction: Auction) => {
     setAuction(auction);
-  }
+  };
 
   const handleNftFetchSuccess = (nft: Nft) => {
     setNft(nft);
-  }
+  };
 
   const handleBidChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setBid(Number(e.target.value));
@@ -130,13 +130,14 @@ const AuctionPage = () => {
 
   const padZero = (num: number) => {
     return num < 10 ? `0${num}` : num;
-  }
+  };
 
   // return {hours, minutes, seconds}
   const getTimeLeft = () => {
-    const endDate = new Date(auction!.endDate);
+    if (!auction) return;
+    const auctionEndDate = new Date(auction.endDate);
     const now = new Date();
-    const diff =  endDate.getTime() - now.getTime();
+    const diff = auctionEndDate.getTime() - now.getTime();
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -144,11 +145,11 @@ const AuctionPage = () => {
     return {
       hours: padZero(hours),
       minutes: padZero(minutes % 60),
-      seconds: padZero(seconds % 60)
-    }
-  }
+      seconds: padZero(seconds % 60),
+    };
+  };
 
-  const {hours, minutes, seconds} = getTimeLeft();
+  const { hours, minutes, seconds } = getTimeLeft();
 
   return (
     <main className="py-32 px-20 flex justify-center gap-10">
@@ -198,17 +199,28 @@ const AuctionPage = () => {
         >
           Place bid
         </button>
-        <span className="mt-3 text-xl">Current bid: <span className="font-bold">{auction?.currentPrice}$</span></span>
+        <span className="mt-3 text-xl">
+          Current bid:{" "}
+          <span className="font-bold">{auction?.currentPrice}$</span>
+        </span>
 
         <div className="flex flex-col gap-2 mt-3 w-full">
           <span className="font-bold">Bids history</span>
           <div className="flex flex-col gap-2">
-            {auction?.bids.sort((a, b) => b.price- a.price).map((bid) => (
-              <div className={`flex justify-between p-4 rounded-xl  ${bid.price === auction.currentPrice ? "bg-green-900/50" : "bg-gray/10"}`}>
-                <span className="font-bold">{bid.bidder.name}</span>
-                <span className="font-mono">{bid.price}$</span>
-              </div>
-            ))}
+            {auction?.bids
+              .sort((a, b) => b.price - a.price)
+              .map((bid) => (
+                <div
+                  className={`flex justify-between p-4 rounded-xl  ${
+                    bid.price === auction.currentPrice
+                      ? "bg-green-900/50"
+                      : "bg-gray/10"
+                  }`}
+                >
+                  <span className="font-bold">{bid.bidder.name}</span>
+                  <span className="font-mono">{bid.price}$</span>
+                </div>
+              ))}
           </div>
         </div>
       </section>
