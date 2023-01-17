@@ -6,7 +6,7 @@ export const AuthProtectedRoutes = () => {
   const { isUserLoggedIn } = useAuthStore();
 
   return (
-    isUserLoggedIn() ? <Outlet/> : <Navigate to='/'/>
+    isUserLoggedIn() ? <Outlet/> : <Navigate to='/login'/>
   )
 }
 
