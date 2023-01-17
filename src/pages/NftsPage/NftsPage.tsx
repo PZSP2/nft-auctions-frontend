@@ -142,7 +142,7 @@ const NftsPage = () => {
         ) : (
           <div className="flex flex-col justify-center items-center bg-black/20 p-10 rounded-xl">
             {isLoading ? (
-              <progress className="progress w-56"></progress>
+              <progress className="progress w-56" />
             ) : (
               <>
                 <p className="text-2xl font-bold">No auctions found!</p>

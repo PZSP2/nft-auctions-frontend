@@ -58,7 +58,7 @@ const BrowsePage = () => {
       </div>
       <section className="flex gap-10 mt-24 flex-wrap justify-center w-full">
         {isLoading ? (
-          <progress className="progress w-56"></progress>
+          <progress className="progress w-56" />
         ) : (
           schools.map(({ schoolId, name, address }) => (
             <div

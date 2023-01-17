@@ -36,7 +36,7 @@ const OwnedNftsPage = () => {
   );
 
   if (isLoading) {
-    return <progress className="progress w-56"></progress>;
+    return <progress className="progress w-56" />;
   }
 
   return (
@@ -53,8 +53,15 @@ const OwnedNftsPage = () => {
       <section className="flex gap-10 mt-16 flex-wrap justify-center w-full">
         {data!.length > 0 ? (
           data!.map(({ nftId, name, description, uri, isImage }: any) => (
-            <div key={nftId} className="max-w-xs min-w-[15rem] bg-gray/5 rounded-xl">
-              <img src={getIpfsImage(uri)} alt="nft" className="rounded-t-xl min-h-[10rem] max-h-96" />
+            <div
+              key={nftId}
+              className="max-w-xs min-w-[15rem] bg-gray/5 rounded-xl"
+            >
+              <img
+                src={getIpfsImage(uri)}
+                alt="nft"
+                className="rounded-t-xl min-h-[10rem] max-h-96"
+              />
               <div className="bg-primary p-5 rounded-b-xl text-center">
                 <p className="font-bold text-2xl">{name}</p>
                 <p className="font-light mt-2">{description}</p>
