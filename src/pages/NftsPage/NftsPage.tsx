@@ -77,7 +77,7 @@ const NftsPage = () => {
       <div className="flex justify-around w-full">
         <span>
           <h3 className="text-3xl font-bold">Available auctions</h3>
-          <h4 className="text-xl mt-3">Explore and buy your favourite items</h4>
+          <h4 className="text-xl mt-3">Explore and buy items from students of <span className="font-bold">{nftsResponse?.data.name}</span></h4>
         </span>
         <div className="flex flex-row gap-5">
           <select 
