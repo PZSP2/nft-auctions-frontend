@@ -26,28 +26,28 @@ const RegisterPage = () => {
         <input
           type="text"
           placeholder="Username"
-          className="input w-full max-w-xs rounded-2xl text-black mt-10"
+          className="input w-full max-w-xs rounded-2xl text-white mt-10"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="text"
           placeholder="Email Adress"
-          className="input w-full max-w-xs rounded-2xl text-black mt-5"
+          className="input w-full max-w-xs rounded-2xl text-white mt-5"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          className="input w-full max-w-xs rounded-2xl text-black mt-5"
+          className="input w-full max-w-xs rounded-2xl text-white mt-5"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
           type="password"
           placeholder="Confirm Password"
-          className="input w-full max-w-xs rounded-2xl text-black mt-5"
+          className="input w-full max-w-xs rounded-2xl text-white mt-5"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
