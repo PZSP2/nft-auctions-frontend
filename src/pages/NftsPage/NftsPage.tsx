@@ -1,44 +1,66 @@
-import { useState } from "react";
-import nftImageMock1 from "../../assets/images/nft_1.png";
-import nftImageMock2 from "../../assets/images/nft_2.png";
-import nftImageMock3 from "../../assets/images/nft_3.png";
+import { useEffect, useState } from "react";
 import authorImg from "../../assets/images/userAvatar.png";
-import { ReactComponent as EyeIcon } from "../../assets/icons/eyeIcon.svg";
+import { ReactComponent as SearchIcon } from "../../assets/icons/searchIcon.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { API_KEYS } from "../../api/API_KEYS";
 import { useQuery } from "@tanstack/react-query";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
 
+type AuctionFilter = "all" | "active" | "won" | "expired";
+
 const NftsPage = () => {
-  const [nfts, setNfts] = useState([]);
+  const [auctions, setAuctions] = useState([]);
   const navigate = useNavigate();
   const { schoolId } = useParams<{ schoolId: string }>();
+  const [nameFilter, setNameFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState<AuctionFilter>("all");
   const { data: nftsResponse, isLoading } = useQuery(
-    [API_KEYS.GET_NFTS],
+    [API_KEYS.GET_AUCTIONS],
     () => axios.get(`/api/school/${schoolId}`).then((response) => response),
     { onSuccess: (response) => handleFetchSuccess(response.data.auctions) }
   );
 
-  const handleSeeMore = () => {};
-
   const handleNftClick = (nftId: number) =>
     navigate(`/browse/${schoolId}/${nftId}`);
 
-  const handleFetchSuccess = (nftsData: any) => {
+  const handleOwnedNftsClick = () =>
+    navigate(`/ownedNfts`);
+
+  const getMappedAndFilteredNfts = () => {
+    if (isLoading || !nftsResponse?.data.auctions) return [];
     /**TODO: Tutaj trzeba dodac autora i auctionId zamienic na nftId jak Wojtek doda do response'a. Bo teraz jest przekierowanie pod zly link */
-    console.log(nftsData);
-    setNfts(
-      nftsData
-        .filter((nft: any) => nft.status !== "WON")
-        .map((nft: any) => ({
-          name: nft.nftName,
-          fileUri: nft.nftUri,
-          nftId: nft.auctionId,
-          status: nft.status,
-        }))
-    );
+    return nftsResponse!.data.auctions
+      .map((nft: any) => ({
+        name: nft.nftName,
+        fileUri: nft.nftUri,
+        nftId: nft.auctionId,
+        status: nft.status,
+      }))
+      .filter((nft: any) => nft.status.toLowerCase() === statusFilter || statusFilter === "all")
+      .filter((nft: any) => {
+        if (nameFilter.length === 0) return true;
+        return nft.name.toLowerCase().includes(nameFilter.toLowerCase())
+      });
   };
+
+  const handleFetchSuccess = (nftsData: any) => {
+    console.log(nftsData);
+    setAuctions(getMappedAndFilteredNfts());
+  };
+
+  const handleSearchInput = (e: any) => {
+    setNameFilter(e.target.value);
+  };
+
+  const handleStatusFilterChange = (e: any) => {
+    setStatusFilter(e.target.value);
+  };
+
+  useEffect(() => {
+    if (isLoading) return;
+    setAuctions(getMappedAndFilteredNfts());
+  }, [nameFilter, statusFilter, nftsResponse]);
 
   return (
     <main className="py-32 px-20 flex items-start flex-col justify-center">
@@ -47,17 +69,32 @@ const NftsPage = () => {
           <h3 className="text-3xl font-bold">Available auctions</h3>
           <h4 className="text-xl mt-3">Explore and buy your favourite items</h4>
         </span>
-        <button
-          onClick={handleSeeMore}
-          className="btn w-fit bg-transparent border-secondary hover:bg-transparent focus:bg-transparent hover:border-secondary focus:border-secondary"
-        >
-          <EyeIcon className="mr-3" />
-          See more
-        </button>
+        <div className="flex flex-row gap-5">
+          <select 
+            className="select select-bordered w-32"
+            onChange={handleStatusFilterChange}
+            disabled={nftsResponse?.data.auctions.length === 0}
+          >
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="won">Won</option>
+            <option value="expired">Ended</option>
+          </select>
+          <span className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="input input-bordered w-full max-w-xs bg-transparent pr-12"
+              onChange={handleSearchInput}
+              disabled={nftsResponse?.data.auctions.length === 0}
+            />
+            <SearchIcon className="absolute top-3 right-3 cursor-pointer" />
+          </span>
+        </div>
       </div>
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
-        {nfts.length > 0 && !isLoading ? (
-          nfts.map(({ name, fileUri, nftId }) => (
+        {!isLoading && auctions.length > 0 ? (
+          auctions.map(({ name, fileUri, nftId }) => (
             <div
               className="cursor-pointer"
               key={nftId}
@@ -88,12 +125,16 @@ const NftsPage = () => {
             </div>
           ))
         ) : (
-          <div className="flex justify-center items-center w-full">
+          <div className="flex flex-col justify-center items-center bg-black/20 p-10 rounded-xl">
             {isLoading ? (
-              <span className="text-2xl font-bold">Loading...</span>
-            ) : (
-              <span className="text-2xl font-bold">No NFTs found</span>
-            )}
+              <progress className="progress w-56"></progress>
+            ) : (<>
+              <p className="text-2xl font-bold">No auctions found!</p>
+              <p className="text-xl font-light">
+                Want to sell an item? Take a look at your 
+                <span className="link link-primary link-hover" onClick={() => handleOwnedNftsClick()}> owned NFTs</span>.
+              </p>
+            </>)}
           </div>
         )}
       </section>

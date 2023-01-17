@@ -45,11 +45,11 @@ const BrowsePage = () => {
         <span className="relative">
           <input
             type="text"
-            placeholder="Search school..."
+            placeholder="Search schools..."
             className="input input-bordered w-full max-w-xs bg-transparent border-primary pr-12"
             onChange={handleChangeInput}
           />
-          <SearchIcon className="absolute top-3 right-3 cursor-pointer" />
+          <SearchIcon className="absolute top-3 right-3" />
         </span>
       </div>
       <section className="flex gap-10 mt-24 flex-wrap justify-center w-full">
