@@ -43,6 +43,10 @@ type Nft = {
     accountId: number;
     name: string;
   };
+  tags: {
+    tagId: number;
+    name: string;
+  }[];
 };
 
 const AuctionPage = () => {
@@ -177,9 +181,11 @@ const AuctionPage = () => {
         <span className="max-w-lg leading-7">{auction.nft.description}</span>
         <span className="text-gray font-mono font-semibold text-lg">Tags</span>
         <div className="flex gap-3">
-          <button className="btn">Mock</button>
-          <button className="btn">Mock</button>
-          <button className="btn">Mock</button>
+          {nft.tags.map((tag) => (
+            <button key={tag.tagId} className="btn">
+              {tag.name}
+            </button>
+          ))}
         </div>
       </section>
       <section className="p-6 flex flex-col bg-primary h-fit rounded-xl gap-2 items-center w-72">

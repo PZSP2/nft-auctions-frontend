@@ -49,7 +49,6 @@ const NftsPage = () => {
   };
 
   const handleFetchSuccess = (nftsData: any) => {
-    console.log(nftsData);
     setAuctions(getMappedAndFilteredNfts());
   };
 
