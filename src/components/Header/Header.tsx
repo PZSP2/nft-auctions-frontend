@@ -20,24 +20,29 @@ const Header = () => {
 
   return (
     <header className="flex justify-between px-20 py-9">
-      <div
-        className="font-bold flex gap-2 items-center text-xl font-mono cursor-pointer"
-        onClick={handleLogoClick}
-      >
-        <MarketIcon />
-        NFT Marketplace
-      </div>
-      <div className="flex gap-14 items-center">
+      <div className="flex flex-row items-center">
+        <div
+          className="font-bold flex gap-2 items-center text-xl font-mono cursor-pointer"
+          onClick={handleLogoClick}
+        >
+          <MarketIcon />
+          NFT Marketplace
+        </div>
+        <div className="divider divider-horizontal"></div>
         <span
-          className="font-semibold cursor-pointer"
+          className="btn btn-sm btn-outline btn-primary"
           onClick={handleMarketClick}
         >
           Browse
         </span>
+      </div>
+      
+      <div className="flex gap-14 items-center">
         <div className="flex flex-row items-center gap-2">
           {isUserLoggedIn() ? (
             <>
-              <span className="text-white font-semibold text-xl mr-5">
+              <span className="flex flex-row items-center text-white font-semibold text-lg p-3 px-4 h-12 bg-black/20 rounded-lg">
+                <UserIcon className="mr-3 w-4" />
                 {name}
               </span>
               <button
@@ -45,7 +50,7 @@ const Header = () => {
                 onClick={() => handleNftsClick()}
                 >
                 MY NFTS
-                </button>
+              </button>
               <button
                 className="btn btn-primary"
                 onClick={() => logoutUser()}
@@ -59,7 +64,6 @@ const Header = () => {
                 onClick={handleLoginClick}
                 className="btn btn-secondary w-fit"
               >
-                <UserIcon className="mr-3" />
                 Login
               </button>
                 
@@ -67,7 +71,6 @@ const Header = () => {
                 onClick={handleSignUpClick}
                 className="btn btn-primary w-fit"
               >
-                <UserIcon className="mr-3" />
                 Sign up
               </button>
             </>
