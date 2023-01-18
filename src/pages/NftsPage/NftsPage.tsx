@@ -31,12 +31,11 @@ const NftsPage = () => {
 
   const getMappedAndFilteredNfts = () => {
     if (isLoading || !schoolResponse?.data.auctions) return [];
-    /**TODO: Tutaj trzeba dodac autora i auctionId zamienic na nftId jak Wojtek doda do response'a. Bo teraz jest przekierowanie pod zly link */
     return schoolResponse!.data.auctions
       .map((nft: any) => ({
         name: nft.nftName,
         fileUri: nft.nftUri,
-        nftId: nft.auctionId,
+        nftId: nft.nftId,
         status: nft.status,
         author: nft.nftIssuer,
         currentBidPrice: nft.lastBid.price,

@@ -6,6 +6,7 @@ import axios from "axios";
 import { MinimalNft } from "../OwnedNftsPage/OwnedNftsPage";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
 import { useMarketplaceStore } from "../../stores/MarketplaceStore";
+import moment from "moment";
 
 type Bid = {
   auctionId: number;
@@ -34,6 +35,7 @@ type Nft = {
   name: string;
   description: string;
   uri: string;
+  mintedDate: string;
   isImage: boolean;
   issuer: {
     accountId: number;
@@ -170,7 +172,10 @@ const AuctionPage = () => {
           className="rounded-xl w-96"
         />
         <h2 className="font-bold text-4xl">{nft?.name}</h2>
-        <span className="text-gray"> Minted on Sep 30, 2022</span>
+        <span className="text-gray">
+          {" "}
+          Minted on {moment(nft.mintedDate).format("lll")}
+        </span>
         <span className="text-gray font-mono font-semibold text-lg">
           Created by
         </span>
