@@ -7,6 +7,7 @@ import { API_KEYS } from "../../api/API_KEYS";
 import { useQuery } from "@tanstack/react-query";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
 import { useMarketplaceStore } from "../../stores/MarketplaceStore";
+import { capitalize } from "lodash";
 
 type AuctionFilter = "all" | "active" | "won" | "expired";
 
@@ -37,6 +38,8 @@ const NftsPage = () => {
         fileUri: nft.nftUri,
         nftId: nft.auctionId,
         status: nft.status,
+        author: nft.nftIssuer,
+        currentBidPrice: nft.lastBid.price,
       }))
       .filter(
         (nft: any) =>
@@ -64,6 +67,12 @@ const NftsPage = () => {
     if (isLoading) return;
     setAuctions(getMappedAndFilteredNfts());
   }, [nameFilter, statusFilter, schoolResponse]);
+
+  const getStatusClassName = (status: string) => {
+    if (status === "WON") return "text-green-400";
+    else if (status === "ENDED") return "text-red-500";
+    return "";
+  };
 
   // when user visits a link from a different school, change it in our store too
   useEffect(() => {
@@ -108,36 +117,40 @@ const NftsPage = () => {
       </div>
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
         {!isLoading && auctions.length > 0 ? (
-          auctions.map(({ name, fileUri, nftId }) => (
-            <div
-              className="cursor-pointer"
-              key={nftId}
-              onClick={() => handleNftClick(nftId)}
-            >
-              <img
-                src={getIpfsImage(fileUri)}
-                alt="nft"
-                className="rounded-t-xl h-80 w-80 max-w-xs"
-              />
-              <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
-                <span className="font-medium text-lg">{name}</span>
-                <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
-                  <img src={authorImg} alt="author" />
-                  {"Biga mock"}
-                </span>
-                <div className="flex justify-between mt-5 font-mono">
-                  <span className="flex gap-1 flex-col">
-                    <span className="text-gray">Min bid</span>
-                    <span>{`125 $`}</span>
+          auctions.map(
+            ({ name, fileUri, nftId, author, currentBidPrice, status }) => (
+              <div
+                className="cursor-pointer"
+                key={nftId}
+                onClick={() => handleNftClick(nftId)}
+              >
+                <img
+                  src={getIpfsImage(fileUri)}
+                  alt="nft"
+                  className="rounded-t-xl h-80 w-80 max-w-xs"
+                />
+                <div className="bg-primary p-5 rounded-b-xl text-center hover:bg-gray">
+                  <span className="font-medium text-lg">{name}</span>
+                  <span className="flex mt-3 gap-3 leading-xs items-center font-light font-mono">
+                    <img src={authorImg} alt="author" />
+                    {author}
                   </span>
-                  <span className="flex gap-1 flex-col">
-                    <span className="text-gray">Current bid</span>
-                    <span>{`150 $`}</span>
-                  </span>
+                  <div className="flex justify-between mt-5 font-mono">
+                    <span className="flex gap-1 flex-col">
+                      <span className="text-gray text-center">Bid status</span>
+                      <span className={getStatusClassName(status)}>
+                        {capitalize(status)}
+                      </span>
+                    </span>
+                    <span className="flex gap-1 flex-col">
+                      <span className="text-gray">Current bid</span>
+                      <span>{`${currentBidPrice}$`}</span>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            )
+          )
         ) : (
           <div className="flex flex-col justify-center items-center bg-black/20 p-10 rounded-xl">
             {isLoading ? (
