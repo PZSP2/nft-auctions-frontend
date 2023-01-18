@@ -26,7 +26,12 @@ const Header = () => {
   const { mutateAsync: mutateAddBalance } = useMutation(
     [API_KEYS.ADD_BALANCE],
     () => axios.put("/api/account/funds", { balanceToAdd: Number(fundsToAdd) }),
-    { onSuccess: () => refetchWallet() }
+    {
+      onSuccess: () => {
+        refetchWallet();
+        setFundsToAdd("");
+      },
+    }
   );
 
   const { data: walletResponse, refetch: refetchWallet } = useWallet();
