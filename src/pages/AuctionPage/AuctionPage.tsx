@@ -7,6 +7,7 @@ import { MinimalNft } from "../OwnedNftsPage/OwnedNftsPage";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
 import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 import moment from "moment";
+import { useWallet } from "../../hooks/useWallet";
 
 type Bid = {
   auctionId: number;
@@ -68,7 +69,7 @@ const AuctionPage = () => {
       axios.get<Auction>(`/api/auction/${auctionId}`).then((res) => res),
     onSuccess: (response) => handleAuctionFetchSuccess(response.data),
   });
-
+  const { data: walletResponse } = useWallet();
   const nftId = auctionResponse?.data.nft.nftId;
 
   const { data: nftResponse, isLoading: loadingNft } = useQuery({
@@ -129,7 +130,10 @@ const AuctionPage = () => {
     setBid(Number(e.target.value));
 
   const handlePlaceBid = () => {
-    bid && mutateBid();
+    if (!walletResponse) return;
+    if (walletResponse.data.balance < bid)
+      alert("You don't have enough funds to bid this auction");
+    else bid && mutateBid();
   };
 
   if (!auction || loadingAuction || loadingNft) return <h3>Loading data...</h3>;
@@ -208,7 +212,7 @@ const AuctionPage = () => {
           </span>
           <input
             type="text"
-            className="input rounded-none rounded-r-lg bg-gray-50 border text-gray-900 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5"
+            className="input rounded-none rounded-r-lg bg-gray-50 border border-solid border-white text-gray-900 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5"
             placeholder="Type your bid"
             onChange={handleBidChange}
             disabled={auctionEnded}
