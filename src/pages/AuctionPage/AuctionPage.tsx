@@ -197,15 +197,27 @@ const AuctionPage = () => {
           ))}
         </div>
       </section>
-      <section className="p-6 flex flex-col bg-primary h-fit rounded-xl gap-2 items-center w-72">
-        <span className="text-xs font-mono">
-          {auctionEnded ? "Auction ended" : "Auction ends in:"}
-        </span>
+      <section className="p-6 flex flex-col bg-primary h-fit rounded-xl gap-2 items-center w-96">
+        {auctionEnded ? (
+          <span className="text-md font-mono font-bold text-error">Auction ended!</span>
+        ) : (
+          <span className="text-xs font-mono">Auction ends in: </span>
+        )}
         {!auctionEnded && (
-          <span className="text-2xl font-mono">
+          <span className="text-3xl font-mono -mt-2">
             {hours}:{minutes}:{seconds}
           </span>
         )}
+        <span className="mt-3 text-lg font-mono">
+          {
+            auction.currentPrice > 0 ? (<>
+              {auctionEnded ? "Winning bid" : "Current price"}{": "}
+              <span className="font-bold">{auction?.currentPrice}$</span>
+            </>) : (<>
+              {auctionEnded ? "No one bidded :(" : "No bids yet"}
+            </>)
+          }
+        </span>
         <div className="flex mt-2">
           <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
             $
@@ -225,29 +237,27 @@ const AuctionPage = () => {
         >
           {auctionEnded ? "Auction ended" : "Place bid"}
         </button>
-        <span className="mt-3 text-xl">
-          Current bid:{" "}
-          <span className="font-bold">{auction?.currentPrice}$</span>
-        </span>
 
         <div className="flex flex-col gap-2 mt-3 w-full">
           <span className="font-bold">Bids history</span>
           <div className="flex flex-col gap-2">
-            {auction?.bids
+            {auction?.bids.length > 0 ? auction?.bids
               .sort((a, b) => b.price - a.price)
               .map((bid) => (
                 <div
                   key={`${bid.createdAt}_${bid.bidder}_${bid.price}`}
                   className={`flex justify-between p-4 rounded-xl  ${
                     bid.price === auction.currentPrice
-                      ? "bg-green-900/50"
+                      ? "bg-green-900/50 text-xl text-green-400/90"
                       : "bg-gray/10"
                   }`}
                 >
                   <span className="font-bold">{bid.bidder.name}</span>
-                  <span className="font-mono">{bid.price}$</span>
+                  <span className={`font-mono ${bid.price === auction.currentPrice && "font-bold"}`}>{bid.price}$</span>
                 </div>
-              ))}
+              )) : (
+                <span className="text-gray">No bids yet!</span>
+              )}
           </div>
         </div>
       </section>
