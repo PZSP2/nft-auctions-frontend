@@ -136,7 +136,7 @@ const NftsPage = () => {
                   </span>
                   <div className="flex justify-between mt-5 font-mono">
                     <span className="flex gap-1 flex-col">
-                      <span className="text-gray text-center">Bid status</span>
+                      <span className="text-gray text-center">Status</span>
                       <span className={getStatusClassName(status)}>
                         {capitalize(status)}
                       </span>
