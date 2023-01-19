@@ -32,10 +32,28 @@ const Header = () => {
       },
     }
   );
+  const { mutateAsync: mutateAcceptAuction } = useMutation(
+    [API_KEYS.ACCEPT_AUCTION],
+    (auctionId: number) => axios.put(`/api/auction/${auctionId}/confirm`),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
+  const { mutateAsync: mutateRejectAuction } = useMutation(
+    [API_KEYS.REJECT_AUCTION],
+    (auctionId: number) => axios.put(`/api/auction/${auctionId}/reject`),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
 
   const { data: walletResponse, refetch: refetchWallet } = useWallet();
 
-  const { data: accountResponse } = useAccountUpdates();
+  const { data: accountResponse, refetch } = useAccountUpdates();
 
   const canAddFunds = /^\d+$/.test(fundsToAdd) && fundsToAdd !== "";
 
@@ -57,147 +75,183 @@ const Header = () => {
 
   const handleLogoutClick = () => logoutUser();
 
-  const showAuctionFinished = accountResponse?.data.ownedAuctionsUpdates.length > 0;
+  const showAuctionFinished =
+    accountResponse && accountResponse?.ownedAuctionsUpdates.length > 0;
 
-  return (<>
-    <label 
-      className={`${showAuctionFinished ? "flex" : "hidden"} justify-center mx-20 -mb-4 mt-4 px-4 py-4 bg-red-600/25 rounded-lg relative cursor-pointer`}
-      htmlFor="auction-confirm-modal"
-    >
-      Your item has been sold! Click here to confirm the transaction.
-  
-      <div className="btn btn-outline btn-error btn-sm absolute right-4 top-3" onClick={() => {}}>
-        CONFIRM
-      </div>
-    </label>
-    <header className="flex justify-between px-20 py-9">
-      <div className="flex flex-row gap-1 items-center">
-        <div className="flex flex-col items-center">
-          <div
-            className="font-bold flex gap-2 items-center text-xl font-mono cursor-pointer"
-            onClick={handleLogoClick}
-          >
-            <MarketIcon />
-            NFT Marketplace
+  return (
+    <>
+      <label
+        className={`${
+          showAuctionFinished ? "flex" : "hidden"
+        } justify-center mx-20 -mb-4 mt-4 px-4 py-4 bg-red-600/25 rounded-lg relative cursor-pointer`}
+        htmlFor="auction-confirm-modal"
+      >
+        Your item has been sold! Click here to confirm the transaction.
+        <div
+          className="btn btn-outline btn-error btn-sm absolute right-4 top-3"
+          onClick={() => {}}
+        >
+          CONFIRM
+        </div>
+      </label>
+      <header className="flex justify-between px-20 py-9">
+        <div className="flex flex-row gap-1 items-center">
+          <div className="flex flex-col items-center">
+            <div
+              className="font-bold flex gap-2 items-center text-xl font-mono cursor-pointer"
+              onClick={handleLogoClick}
+            >
+              <MarketIcon />
+              NFT Marketplace
+            </div>
+            {schoolId && (
+              <div className="flex flex-row items-center gap-2">
+                <span>{schoolsResponse?.data.name}</span>
+              </div>
+            )}
+          </div>
+          <div className="divider divider-horizontal"></div>
+          <div className="btn btn-primary" onClick={handleBrowseClick}>
+            Browse NFTs
           </div>
           {schoolId && (
-            <div className="flex flex-row items-center gap-2">
-              <span>{schoolsResponse?.data.name}</span>
-            </div>
+            <span
+              className="btn btn-outline text-base-content/75 ml-2"
+              onClick={handleSchoolChangeClick}
+            >
+              Change school
+            </span>
           )}
         </div>
-        <div className="divider divider-horizontal"></div>
-        <div className="btn btn-primary" onClick={handleBrowseClick}>
-          Browse NFTs
-        </div>
-        {schoolId && (
-          <span
-            className="btn btn-outline text-base-content/75 ml-2"
-            onClick={handleSchoolChangeClick}
-          >
-            Change school
-          </span>
-        )}
-      </div>
 
-      <div className="flex gap-14 items-center">
-        <div className="flex flex-row items-center gap-2">
-          {isUserLoggedIn() ? (
-            <>
-              <span className="flex flex-row items-center text-white font-semibold text-lg p-3 px-4 h-12 bg-black/20 rounded-lg">
-                <UserIcon className="mr-3 w-4" />
-                {name}
-              </span>
-              <label
-                htmlFor="wallet-modal"
-                className="flex flex-row items-center text-white font-semibold text-lg p-3 px-4 h-12 bg-black/20 rounded-lg"
-              >
-                <WalletIcon className="mr-3 w-4" />
-                Wallet
-              </label>
-              <button
-                className="btn btn-secondary"
-                onClick={() => handleNftsClick()}
-              >
-                MY NFTS
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={() => handleLogoutClick()}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={handleLoginClick}
-                className="btn btn-secondary w-fit"
-              >
-                Login
-              </button>
-
-              <button
-                onClick={handleSignUpClick}
-                className="btn btn-primary w-fit"
-              >
-                Sign up
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-      {walletResponse && (
-        <>
-          <input type="checkbox" id="wallet-modal" className="modal-toggle" />
-          <div className="modal">
-            <div className="modal-box relative">
-              <label
-                htmlFor="wallet-modal"
-                className="btn btn-sm btn-circle absolute right-2 top-2"
-              >
-                ✕
-              </label>
-              <h3 className="font-bold text-lg text-center">Your wallet</h3>
-              <p className="py-4">
-                Current balance: <b>{walletResponse.data.balance}</b> $
-              </p>
-              <div className="flex gap-4 items-center justify-around mt-3">
-                <div className="flex">
-                  <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                    $
-                  </span>
-                  <input
-                    type="text"
-                    className="input rounded-none rounded-r-lg bg-gray-50 border border-white border-solid text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5"
-                    placeholder="Type amount of funds"
-                    onChange={(e) => {
-                      setFundsToAdd(e.target.value);
-                    }}
-                    value={fundsToAdd}
-                  />
-                </div>
-                <button
-                  onClick={handleAddFunds}
-                  className="btn btn-primary w-fit"
-                  disabled={!canAddFunds}
+        <div className="flex gap-14 items-center">
+          <div className="flex flex-row items-center gap-2">
+            {isUserLoggedIn() ? (
+              <>
+                <span className="flex flex-row items-center text-white font-semibold text-lg p-3 px-4 h-12 bg-black/20 rounded-lg">
+                  <UserIcon className="mr-3 w-4" />
+                  {name}
+                </span>
+                <label
+                  htmlFor="wallet-modal"
+                  className="flex flex-row items-center text-white font-semibold text-lg p-3 px-4 h-12 bg-black/20 rounded-lg"
                 >
-                  <ArrowUpIcon className="mr-3 w-6 h-6" />
-                  Add funds
+                  <WalletIcon className="mr-3 w-4" />
+                  Wallet
+                </label>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => handleNftsClick()}
+                >
+                  MY NFTS
                 </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleLogoutClick()}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={handleLoginClick}
+                  className="btn btn-secondary w-fit"
+                >
+                  Login
+                </button>
+
+                <button
+                  onClick={handleSignUpClick}
+                  className="btn btn-primary w-fit"
+                >
+                  Sign up
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+        {walletResponse && (
+          <>
+            <input type="checkbox" id="wallet-modal" className="modal-toggle" />
+            <div className="modal">
+              <div className="modal-box relative">
+                <label
+                  htmlFor="wallet-modal"
+                  className="btn btn-sm btn-circle absolute right-2 top-2"
+                >
+                  ✕
+                </label>
+                <h3 className="font-bold text-lg text-center">Your wallet</h3>
+                <p className="py-4">
+                  Current balance: <b>{walletResponse.data.balance}</b> $
+                </p>
+                <div className="flex gap-4 items-center justify-around mt-3">
+                  <div className="flex">
+                    <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                      $
+                    </span>
+                    <input
+                      type="text"
+                      className="input rounded-none rounded-r-lg bg-gray-50 border border-white border-solid text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5"
+                      placeholder="Type amount of funds"
+                      onChange={(e) => {
+                        setFundsToAdd(e.target.value);
+                      }}
+                      value={fundsToAdd}
+                    />
+                  </div>
+                  <button
+                    onClick={handleAddFunds}
+                    className="btn btn-primary w-fit"
+                    disabled={!canAddFunds}
+                  >
+                    <ArrowUpIcon className="mr-3 w-6 h-6" />
+                    Add funds
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      )}
-    </header>
-    <input type="checkbox" id="auction-confirm-modal" className="modal-toggle" />
-    <label htmlFor="auction-confirm-modal" className="modal cursor-pointer">
-      <label className="modal-box relative" htmlFor="">
-        <h3 className="text-lg font-bold">Congratulations random Internet user!</h3>
-        <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+          </>
+        )}
+      </header>
+      <input
+        type="checkbox"
+        id="auction-confirm-modal"
+        className="modal-toggle"
+      />
+      <label htmlFor="auction-confirm-modal" className="modal cursor-pointer">
+        <label className="modal-box relative" htmlFor="">
+          {accountResponse &&
+          accountResponse?.ownedAuctionsUpdates.length > 0 ? (
+            <>
+              <h3 className="text-lg font-bold">
+                Your auctions which needs to be confirmed:
+              </h3>
+              {accountResponse.ownedAuctionsUpdates.map((auction) => (
+                <div className="mt-14 flex justify-between items-center">
+                  <p>{auction.nftName} has been bid!</p>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => mutateAcceptAuction(auction.auctionId)}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    className="btn btn-error"
+                    onClick={() => mutateRejectAuction(auction.auctionId)}
+                  >
+                    Reject
+                  </button>
+                </div>
+              ))}
+            </>
+          ) : (
+            <h3>Nothing to confirm!</h3>
+          )}
+        </label>
       </label>
-    </label>
-  </>);
+    </>
+  );
 };
 export default Header;
