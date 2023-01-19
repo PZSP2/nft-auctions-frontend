@@ -132,7 +132,7 @@ const AuctionPage = () => {
   const handlePlaceBid = () => {
     if (!walletResponse) return;
     if (walletResponse.data.balance < bid)
-      alert("You don't have enough funds to bid this auction");
+      alert("You don't have enough funds to bid this price!");
     else bid && mutateBid();
   };
 
