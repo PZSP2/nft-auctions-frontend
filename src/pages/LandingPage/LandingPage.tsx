@@ -16,12 +16,12 @@ const LandingPage = () => {
         // this will redirect to /browse/schoolId
         navigate("/browse");
       } else {
-        navigate("/school")
+        navigate("/school");
       }
     } else {
       navigate("/register");
     }
-  }
+  };
 
   return (
     <>
@@ -47,15 +47,15 @@ const LandingPage = () => {
           </button>
           <div className="flex justify-between mt-8 max-w-sm">
             <div className="flex flex-col ">
-              <span className="font-semibold text-2xl">240k+</span>
-              <span className="text-lg">Total Sale</span>
+              <span className="font-semibold text-2xl text-center">15+</span>
+              <span className="text-lg">Total auctions</span>
             </div>
             <div className="flex flex-col ">
-              <span className="font-semibold text-2xl">100k+</span>
-              <span className="text-lg">Auctions</span>
+              <span className="font-semibold text-2xl text-center">3+</span>
+              <span className="text-lg">Schools</span>
             </div>
             <div className="flex flex-col ">
-              <span className="font-semibold text-2xl">160k+</span>
+              <span className="font-semibold text-2xl text-center">10+</span>
               <span className="text-lg">Artists</span>
             </div>
           </div>
