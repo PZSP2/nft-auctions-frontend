@@ -38,7 +38,7 @@ const NftsPage = () => {
         nftId: nft.nftId,
         status: nft.status,
         author: nft.nftIssuer,
-        currentBidPrice: nft.lastBid ? nft.lastBid.price : 0,
+        currentBidPrice: nft.lastBid?.price ?? 0,
       }))
       .filter(
         (nft: any) =>
@@ -142,8 +142,12 @@ const NftsPage = () => {
                       </span>
                     </span>
                     <span className="flex gap-1 flex-col">
-                      <span className="text-gray">Current bid</span>
-                      <span>{`${currentBidPrice}$`}</span>
+                      <span className="text-gray">Highest bid</span>
+                      {currentBidPrice > 0 ? (
+                        <span>{`${currentBidPrice}$`}</span>
+                      ) : (
+                        <span className="text-gray">none!</span>
+                      )}
                     </span>
                   </div>
                 </div>
