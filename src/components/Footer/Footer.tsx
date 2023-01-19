@@ -6,6 +6,8 @@ const Footer = () => {
 
   const handleMarketplaceClick = () => navigate("/browse");
 
+  const handleOwnedNftsClick = () => navigate("/ownedNfts");
+
   return (
     <footer className="px-20 flex gap-5 absolute bottom-14 w-full justify-center">
       <div className="flex flex-col gap-6 w-80">
@@ -25,6 +27,12 @@ const Footer = () => {
           onClick={handleMarketplaceClick}
         >
           Marketplace
+        </span>
+        <span
+          className="text-gray cursor-pointer hover:text-white"
+          onClick={handleOwnedNftsClick}
+        >
+          Your items
         </span>
       </div>
     </footer>
