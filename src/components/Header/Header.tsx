@@ -51,7 +51,7 @@ const Header = () => {
     }
   );
 
-  const { data: walletResponse, refetch: refetchWallet } = useWallet();
+  const { data: walletResponse, refetch: refetchWallet, isLoading: walletLoading } = useWallet();
 
   const { data: accountResponse, refetch } = useAccountUpdates();
 
@@ -134,10 +134,10 @@ const Header = () => {
                 </span>
                 <label
                   htmlFor="wallet-modal"
-                  className="flex flex-row items-center text-white font-semibold text-lg p-3 px-4 h-12 bg-black/20 rounded-lg"
+                  className="flex flex-row items-center text-white font-semibold text-lg p-3 px-4 h-12 bg-black/20 rounded-lg cursor-pointer hover:bg-black/10"
                 >
                   <WalletIcon className="mr-3 w-4" />
-                  Wallet
+                  {(walletResponse && !walletLoading ? walletResponse.data.balance + "$" : "Wallet")}
                 </label>
                 <button
                   className="btn btn-secondary"
@@ -183,17 +183,17 @@ const Header = () => {
                   ✕
                 </label>
                 <h3 className="font-bold text-lg text-center">Your wallet</h3>
-                <p className="py-4">
+                <p className="py-4 text-center">
                   Current balance: <b>{walletResponse.data.balance}</b> $
                 </p>
                 <div className="flex gap-4 items-center justify-around mt-3">
                   <div className="flex">
-                    <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                    <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-l-md border-secondary">
                       $
                     </span>
                     <input
                       type="text"
-                      className="input rounded-none rounded-r-lg bg-gray-50 border border-white border-solid text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5"
+                      className="input rounded-none rounded-r-lg bg-gray-50 border border-primary border-solid text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5"
                       placeholder="Type amount of funds"
                       onChange={(e) => {
                         setFundsToAdd(e.target.value);
