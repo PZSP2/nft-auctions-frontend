@@ -32,7 +32,7 @@ const CreateAuctionPage = () => {
   const { nftId } = useParams<{ nftId: string }>();
   const navigate = useNavigate();
   const [selectedDuration, setSelectedDuration] = useState(0);
-  const durations = [5, 15, 30, 45, 60];
+  const durations = [1, 5, 15, 30, 45, 60];
   const { data: nftResponse } = useQuery<Nft>([API_KEYS.GET_NFT], () =>
     axios.get(`/api/nft/${nftId}`).then((response) => response.data)
   );
