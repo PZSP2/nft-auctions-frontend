@@ -87,7 +87,7 @@ const AuctionPage = () => {
     [API_KEYS.BID_NFT],
     () =>
       axios
-        .post(`/api/auction/${nftId}/bid`, {
+        .post(`/api/auction/${auctionId}/bid`, {
           bidAmount: bid,
         })
         .then((res) => res),
@@ -95,8 +95,8 @@ const AuctionPage = () => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [API_KEYS.GET_AUCTION] });
       },
-      onError: () => {
-        if (bidResponse?.status === 400) alert("Bid amount is too low!");
+      onError: (error: any) => {
+        if (error.response.data.message) alert(error.response.data.message);
         else alert("Something went wrong!");
       },
     }
@@ -221,7 +221,7 @@ const AuctionPage = () => {
         <button
           onClick={handlePlaceBid}
           className="btn btn-primary w-fit font-mono mt-3"
-          disabled={auction?.currentPrice ? bid <= auction?.currentPrice : true}
+          disabled={auction?.currentPrice !== null ? bid <= auction?.currentPrice : true}
         >
           {auctionEnded ? "Auction ended" : "Place bid"}
         </button>
