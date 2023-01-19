@@ -60,7 +60,7 @@ const CreateNftPage = () => {
   const handleSubmit = async () => {
     if (!name || !description || !file || !selectedTags) return;
     const formData = new FormData();
-    selectedTags.forEach((tag) => formData.append("tags", tag.toString()));
+    selectedTags.forEach((tag) => formData.append("tags[]", tag.toString()));
     formData.append("file", file);
     formData.append("name", name);
     formData.append("description", description);
