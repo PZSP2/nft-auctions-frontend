@@ -23,7 +23,9 @@ const OwnedNftsPage = () => {
     navigate("/createNft");
   };
 
-  const handleSellNft = (nftId: number) => {};
+  const handleSellNft = (nftId: number) => {
+    navigate(`/sellNft/${nftId}`);
+  };
 
   const getOwnedNftsData = async () => {
     const response = await axios.get(`/api/account/${accountId}`);

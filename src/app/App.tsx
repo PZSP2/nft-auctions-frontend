@@ -1,7 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { AuthProtectedRoutes, BrowseRoute, SchoolProtectedRoutes } from "../components/Routes";
+import {
+  AuthProtectedRoutes,
+  BrowseRoute,
+  SchoolProtectedRoutes,
+} from "../components/Routes";
 import SchoolChoicePage from "../pages/SchoolChoicePage/SchoolChoicePage";
 import CreateNftPage from "../pages/CreateNftPage";
 import LandingPage from "../pages/LandingPage";
@@ -10,6 +14,7 @@ import NftsPage from "../pages/NftsPage";
 import OwnedNftsPage from "../pages/OwnedNftsPage";
 import RegisterPage from "../pages/RegisterPage";
 import AuctionPage from "../pages/AuctionPage";
+import CreateAuctionPage from "../pages/CreateAuctionPage";
 
 const App = () => {
   return (
@@ -32,7 +37,11 @@ const App = () => {
           {/* these aren't school protected - 
            if user visits a link, schoolId will be automatically set */}
           <Route element={<NftsPage />} path="/browse/:schoolId" />
-          <Route element={<AuctionPage />} path="/browse/:schoolId/:auctionId" />
+          <Route
+            element={<AuctionPage />}
+            path="/browse/:schoolId/:auctionId"
+          />
+          <Route element={<CreateAuctionPage />} path="/sellNft/:nftId" />
         </Route>
       </Routes>
       <Footer />
