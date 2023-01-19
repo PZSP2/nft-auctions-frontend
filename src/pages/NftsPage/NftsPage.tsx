@@ -38,7 +38,7 @@ const NftsPage = () => {
         nftId: nft.nftId,
         status: nft.status,
         author: nft.nftIssuer,
-        currentBidPrice: nft.lastBid.price,
+        currentBidPrice: nft.lastBid ? nft.lastBid.price : 0,
       }))
       .filter(
         (nft: any) =>
@@ -69,7 +69,7 @@ const NftsPage = () => {
 
   const getStatusClassName = (status: string) => {
     if (status === "WON") return "text-green-400";
-    else if (status === "ENDED") return "text-red-500";
+    else if (status === "ENDED" || status === "EXPIRED") return "text-red-500";
     return "";
   };
 

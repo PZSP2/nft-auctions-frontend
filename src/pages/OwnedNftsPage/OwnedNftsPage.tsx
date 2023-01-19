@@ -1,11 +1,10 @@
-import { useState } from "react";
-import authorImg from "../../assets/images/userAvatar.png";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_KEYS } from "../../api/API_KEYS";
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../stores/AuthStore";
 import { getIpfsImage } from "../../utils/ipfsImageGetter";
+import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 
 export type MinimalNft = {
   nftId: number;
@@ -13,18 +12,22 @@ export type MinimalNft = {
   description: string;
   uri: string;
   isImage: boolean;
+  activeAuctionId: number | null;
 };
 
 const OwnedNftsPage = () => {
   const navigate = useNavigate();
   const { accountId } = useAuthStore();
+  const { schoolId } = useMarketplaceStore();
 
   const handleCreateNft = () => {
     navigate("/createNft");
   };
 
-  const handleSellNft = (nftId: number) => {
-    navigate(`/sellNft/${nftId}`);
+  const handleSellNft = (nftId: number, activeAuctionId: number | null) => {
+    activeAuctionId
+      ? navigate(`/browse/${schoolId}/${activeAuctionId}`)
+      : navigate(`/sellNft/${nftId}`);
   };
 
   const getOwnedNftsData = async () => {
@@ -50,7 +53,7 @@ const OwnedNftsPage = () => {
       </div>
       <section className="flex gap-10 mt-16 flex-wrap justify-center w-full">
         {data.length > 0 ? (
-          data.map(({ nftId, name, description, uri, isImage }: any) => (
+          data.map(({ nftId, name, description, uri, activeAuctionId }) => (
             <div
               key={nftId}
               className="max-w-xs min-w-[15rem] bg-gray/5 rounded-xl"
@@ -60,14 +63,14 @@ const OwnedNftsPage = () => {
                 alt="nft"
                 className="rounded-t-xl h-80 w-80"
               />
-              <div className="p-5 rounded-b-xl text-center">
+              <div className="p-5 rounded-b-xl text-center flex flex-col">
                 <p className="font-bold text-2xl">{name}</p>
-                <p className="font-light mt-2">{description}</p>
+                <p className="font-light mt-2 h-24">{description}</p>
                 <button
                   className="btn btn-primary mt-5"
-                  onClick={() => handleSellNft(nftId)}
+                  onClick={() => handleSellNft(nftId, activeAuctionId)}
                 >
-                  Sell
+                  {activeAuctionId ? "Show auction" : "Sell"}
                 </button>
               </div>
             </div>
