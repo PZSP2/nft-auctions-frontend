@@ -19,10 +19,8 @@ const Header = () => {
   const [fundsToAdd, setFundsToAdd] = useState("");
   const { data: schoolsResponse, isLoading } = useQuery(
     [API_KEYS.GET_SCHOOL_INFO],
-    () => {
-      if (!schoolId) return;
-      return axios.get(`/api/school/${schoolId}`).then((response) => response);
-    }
+    () => axios.get(`/api/school/${schoolId}`).then((response) => response),
+    { enabled: !!schoolId }
   );
   const { mutateAsync: mutateAddBalance } = useMutation(
     [API_KEYS.ADD_BALANCE],
