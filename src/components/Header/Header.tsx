@@ -10,6 +10,7 @@ import { useWallet } from "../../hooks/useWallet";
 import { useAuthStore } from "../../stores/AuthStore";
 import { useMarketplaceStore } from "../../stores/MarketplaceStore";
 import { useState } from "react";
+import { useAccountUpdates } from "../../hooks/useAccountUpdates";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -36,6 +37,8 @@ const Header = () => {
 
   const { data: walletResponse, refetch: refetchWallet } = useWallet();
 
+  const { data: accountResponse } = useAccountUpdates();
+
   const canAddFunds = /^\d+$/.test(fundsToAdd) && fundsToAdd !== "";
 
   const handleAddFunds = () => {
@@ -56,7 +59,19 @@ const Header = () => {
 
   const handleLogoutClick = () => logoutUser();
 
-  return (
+  const showAuctionFinished = accountResponse?.data.ownedAuctionsUpdates.length > 0;
+
+  return (<>
+    <label 
+      className={`${showAuctionFinished ? "flex" : "hidden"} justify-center mx-20 -mb-4 mt-4 px-4 py-4 bg-red-600/25 rounded-lg relative cursor-pointer`}
+      htmlFor="auction-confirm-modal"
+    >
+      Your item has been sold! Click here to confirm the transaction.
+  
+      <div className="btn btn-outline btn-error btn-sm absolute right-4 top-3" onClick={() => {}}>
+        CONFIRM
+      </div>
+    </label>
     <header className="flex justify-between px-20 py-9">
       <div className="flex flex-row gap-1 items-center">
         <div className="flex flex-col items-center">
@@ -178,6 +193,13 @@ const Header = () => {
         </>
       )}
     </header>
-  );
+    <input type="checkbox" id="auction-confirm-modal" className="modal-toggle" />
+    <label htmlFor="auction-confirm-modal" className="modal cursor-pointer">
+      <label className="modal-box relative" htmlFor="">
+        <h3 className="text-lg font-bold">Congratulations random Internet user!</h3>
+        <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+      </label>
+    </label>
+  </>);
 };
 export default Header;

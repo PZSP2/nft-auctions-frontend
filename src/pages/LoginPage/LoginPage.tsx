@@ -47,15 +47,15 @@ const LoginPage = () => {
           </span>
           <input
             type="text"
-            placeholder="Email Address"
-            className="input w-full max-w-xs rounded-2xl mt-10"
+            placeholder="Email address"
+            className="input input-bordered w-full max-w-xs rounded-2xl mt-10"
             onChange={(e) => setUsername(e.target.value)}
             value={username}
           />
           <input
             type="password"
-            placeholder="Confirm Password"
-            className="input w-full max-w-xs rounded-2xl mt-5"
+            placeholder="Password"
+            className="input input-bordered w-full max-w-xs rounded-2xl mt-5"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
