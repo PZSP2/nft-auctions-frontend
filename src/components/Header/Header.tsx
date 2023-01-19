@@ -112,7 +112,7 @@ const Header = () => {
           </div>
           <div className="divider divider-horizontal"></div>
           <div className="btn btn-primary" onClick={handleBrowseClick}>
-            Browse NFTs
+            Browse auctions
           </div>
           {schoolId && (
             <span
@@ -143,7 +143,7 @@ const Header = () => {
                   className="btn btn-secondary"
                   onClick={() => handleNftsClick()}
                 >
-                  MY NFTS
+                  MY ITEMS
                 </button>
                 <button
                   className="btn btn-primary"
@@ -230,7 +230,7 @@ const Header = () => {
               </h3>
               {accountResponse.ownedAuctionsUpdates.map((auction) => (
                 <div className="mt-14 flex justify-between items-center">
-                  <p>{auction.nftName} has been bid!</p>
+                  <p>{auction.nftName} has been won!</p>
                   <button
                     className="btn btn-success"
                     onClick={() => mutateAcceptAuction(auction.auctionId)}

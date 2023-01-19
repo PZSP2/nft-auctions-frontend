@@ -170,7 +170,7 @@ const NftsPage = () => {
                     onClick={() => handleOwnedNftsClick()}
                   >
                     {" "}
-                    owned NFTs
+                    owned items.
                   </span>
                   .
                 </p>

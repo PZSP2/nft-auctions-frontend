@@ -71,7 +71,7 @@ const CreateNftPage = () => {
     <main className="py-32 px-20 flex items-start flex-col justify-center">
       <div className="flex justify-around w-full">
         <span>
-          <h3 className="text-4xl font-bold">Create your own NFT</h3>
+          <h3 className="text-4xl font-bold">Create your own item</h3>
           <h4 className="text-xl mt-3">
             Just type in name, description and attach file
           </h4>
@@ -81,21 +81,21 @@ const CreateNftPage = () => {
           disabled={!canCreateNft}
           onClick={handleSubmit}
         >
-          Create an NFT
+          CREATE
         </button>
       </div>
       <section className="flex gap-10 mt-16 flex-wrap justify-center w-full">
         <div className="flex flex-col gap-6">
           <input
             type="text"
-            placeholder="Enter NFT name..."
+            placeholder="Enter name..."
             className="input input-bordered w-96"
             value={name}
             onChange={handleNameChange}
           />
           <input
             type="text"
-            placeholder="Enter NFT description..."
+            placeholder="Enter description..."
             value={description}
             className="input input-bordered w-96"
             onChange={handleDescChange}

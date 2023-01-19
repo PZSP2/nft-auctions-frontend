@@ -44,11 +44,11 @@ const OwnedNftsPage = () => {
     <main className="py-32 px-20 flex items-start flex-col justify-center">
       <div className="flex justify-around w-full">
         <span>
-          <h3 className="text-4xl font-bold">Your NFTs</h3>
+          <h3 className="text-4xl font-bold">Your items</h3>
           <h4 className="text-xl mt-3">Browse items you created or bought</h4>
         </span>
         <button className="btn btn-primary" onClick={handleCreateNft}>
-          Create an NFT
+          Create an item
         </button>
       </div>
       <section className="flex gap-10 mt-16 flex-wrap justify-center w-full">
@@ -77,7 +77,7 @@ const OwnedNftsPage = () => {
           ))
         ) : (
           <div className="flex flex-col items-center bg-black/20 p-10 rounded-xl">
-            <h3 className="text-3xl font-bold">You don't have any NFTs yet</h3>
+            <h3 className="text-3xl font-bold">You don't have any items yet</h3>
             <h4 className="text-xl mt-3">
               Create or buy some to see them here
             </h4>

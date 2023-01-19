@@ -32,11 +32,11 @@ const LandingPage = () => {
             <br />
             Digital Work &
             <br />
-            Collect NFTs
+            Collect Items
           </span>
           <span className="text-base max-w-md">
             NFT Marketplace is designed for students' school works. Collect, buy
-            and sell works from more than 20k NFT users
+            and sell works from students of your chosen school!
           </span>
           <button
             onClick={handleGetStarted}

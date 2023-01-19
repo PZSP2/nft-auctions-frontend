@@ -43,7 +43,7 @@ const LoginPage = () => {
           <span className="text-xl mt-4">
             Enter your account details
             <br />
-            to start trading NFTs
+            to start exploring available auctions
           </span>
           <input
             type="text"
