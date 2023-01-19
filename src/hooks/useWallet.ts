@@ -6,10 +6,3 @@ export const useWallet = () =>
   useQuery([API_KEYS.GET_WALLET], () => {
     return axios.get("/api/account/wallet").then((response) => response);
   });
-
-export const useAccountUpdates = () =>
-  useQuery([API_KEYS.GET_ACCOUNT_UPDATES], () => {
-    return axios
-      .get("api/account/me/updates")
-      .then((response) => response);
-  });
