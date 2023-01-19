@@ -65,7 +65,7 @@ const OwnedNftsPage = () => {
               />
               <div className="p-5 rounded-b-xl text-center flex flex-col">
                 <p className="font-bold text-2xl">{name}</p>
-                <p className="font-light mt-2 h-24">{description}</p>
+                <p className="font-light mt-2 h-20">{description}</p>
                 <button
                   className="btn btn-primary mt-5"
                   onClick={() => handleSellNft(nftId, activeAuctionId)}
