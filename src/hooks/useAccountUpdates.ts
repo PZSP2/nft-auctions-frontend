@@ -17,6 +17,9 @@ export const useAccountUpdates = () => {
     [API_KEYS.GET_ACCOUNT_UPDATES],
     () =>
       axios.get("/api/account/me/updates").then((response) => response.data),
-    { enabled: isUserLoggedIn() }
+    { 
+      enabled: isUserLoggedIn(),
+      refetchInterval: 5000,
+    }
   );
 };
