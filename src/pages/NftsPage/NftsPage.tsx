@@ -17,7 +17,7 @@ const NftsPage = () => {
   const { schoolId } = useParams<{ schoolId: string }>();
   const [auctions, setAuctions] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState<AuctionFilter>("all");
+  const [statusFilter, setStatusFilter] = useState<AuctionFilter>("active");
   const { data: schoolResponse, isLoading } = useQuery(
     [API_KEYS.GET_SCHOOL_INFO],
     () => axios.get(`/api/school/${schoolId}`).then((response) => response),
@@ -97,6 +97,7 @@ const NftsPage = () => {
             className="select select-bordered w-32"
             onChange={handleStatusFilterChange}
             disabled={schoolResponse?.data.auctions.length === 0}
+            defaultValue="active"
           >
             <option value="all">All</option>
             <option value="active">Active</option>
