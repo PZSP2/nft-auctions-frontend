@@ -32,21 +32,22 @@ const NftsPage = () => {
   const getMappedAndFilteredNfts = () => {
     if (isLoading || !schoolResponse?.data.auctions) return [];
     return schoolResponse!.data.auctions
-      .map((nft: any) => ({
-        name: nft.nftName,
-        fileUri: nft.nftUri,
-        nftId: nft.nftId,
-        status: nft.status,
-        author: nft.nftIssuer,
-        currentBidPrice: nft.lastBid?.price ?? 0,
+      .map((auction: any) => ({
+        name: auction.nftName,
+        fileUri: auction.nftUri,
+        nftId: auction.nftId,
+        status: auction.status,
+        author: auction.nftIssuer,
+        auctionId: auction.auctionId,
+        currentBidPrice: auction.lastBid?.price ?? 0,
       }))
       .filter(
-        (nft: any) =>
-          nft.status.toLowerCase() === statusFilter || statusFilter === "all"
+        (auction: any) =>
+          auction.status.toLowerCase() === statusFilter || statusFilter === "all"
       )
-      .filter((nft: any) => {
+      .filter((auction: any) => {
         if (nameFilter.length === 0) return true;
-        return nft.name.toLowerCase().includes(nameFilter.toLowerCase());
+        return auction.name.toLowerCase().includes(nameFilter.toLowerCase());
       });
   };
 
@@ -117,10 +118,10 @@ const NftsPage = () => {
       <section className="flex gap-10 mt-32 flex-wrap justify-center w-full">
         {!isLoading && auctions.length > 0 ? (
           auctions.map(
-            ({ name, fileUri, nftId, author, currentBidPrice, status }) => (
+            ({ auctionId, name, fileUri, nftId, author, currentBidPrice, status }) => (
               <div
                 className="cursor-pointer"
-                key={nftId}
+                key={auctionId}
                 onClick={() => handleNftClick(nftId)}
               >
                 <img
