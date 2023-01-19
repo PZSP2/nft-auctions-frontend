@@ -24,8 +24,8 @@ const NftsPage = () => {
     { onSuccess: (response) => handleFetchSuccess(response.data.auctions) }
   );
 
-  const handleNftClick = (nftId: number) =>
-    navigate(`/browse/${schoolId}/${nftId}`);
+  const handleAuctionClick = (auctionId: number) =>
+    navigate(`/browse/${schoolId}/${auctionId}`);
 
   const handleOwnedNftsClick = () => navigate(`/ownedNfts`);
 
@@ -122,7 +122,7 @@ const NftsPage = () => {
               <div
                 className="cursor-pointer"
                 key={auctionId}
-                onClick={() => handleNftClick(nftId)}
+                onClick={() => handleAuctionClick(auctionId)}
               >
                 <img
                   src={getIpfsImage(fileUri)}
