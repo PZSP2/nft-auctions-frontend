@@ -60,12 +60,13 @@ const RegisterPage = () => {
       onSuccess: (data) => {
         if (data.data.walleAddress) {
           setShowModal(false);
-          loginUser(registerData.accountId, registerData.name);
+          loginUser(registerData.id, registerData.username);
           navigate("/browse");
         }
       },
       cacheTime: 0,
-      enabled: walletQueryEnabled
+      enabled: walletQueryEnabled,
+      refetchInterval: 500,
     }
   );
 
