@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_KEYS } from "../../api/API_KEYS";
@@ -37,7 +37,9 @@ const Header = () => {
     (auctionId: number) => axios.put(`/api/auction/${auctionId}/confirm`),
     {
       onSuccess: () => {
+        let queryClient = useQueryClient();
         refetch();
+        queryClient.invalidateQueries({ queryKey: [API_KEYS.GET_OWNED_NFTS] });
       },
     }
   );
@@ -46,7 +48,9 @@ const Header = () => {
     (auctionId: number) => axios.put(`/api/auction/${auctionId}/reject`),
     {
       onSuccess: () => {
+        let queryClient = useQueryClient();
         refetch();
+        queryClient.invalidateQueries({ queryKey: [API_KEYS.GET_OWNED_NFTS] });
       },
     }
   );
